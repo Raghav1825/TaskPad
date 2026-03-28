@@ -1,17 +1,11 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import { Outlet } from "react-router-dom"
+import NavBar from "./Components/NavBar"
 function App() {
-  const [count, setCount] = useState(0)
-
+  
   return (
-    <>
-        <div className='text-3xl font-bold underline text-amber-700'>
-          <p>Hello World</p>
-        </div>
-    </>
+    <div className="min-h-screen w-full bg-[#15173D] text-[#F1E9E9] font-sans">
+        <NavBar/>
+    </div>
   )
 }
 
