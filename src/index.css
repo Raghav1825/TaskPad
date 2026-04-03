@@ -3,3 +3,12 @@
 html, body, #root {
   height: 100%;
 }
+@theme {
+  --color-primary:    #982598;
+  --color-accent:     #E491C9;
+  --color-surface:    #15173D;
+  --color-on-surface: #F1E9E9;
+  --color-logo-bg:    #F1E9E9;
+  --color-btn-login-bg:   #fffbeb;
+  --color-btn-login-text: #000000;
+}
