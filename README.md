@@ -1,16 +1,130 @@
-# React + Vite
+# TaskPad – Kanban Board Web Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+TaskPad is a Kanban-style task management web application built using React and Tailwind CSS. It is designed to help users organize projects, manage daily tasks, and track progress efficiently through a clean and responsive interface.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Current Implementation Overview
 
-## React Compiler
+At this stage, the project focuses on building the core layout, navigation, and routing structure.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Application Layout
 
-## Expanding the ESLint configuration
+The main layout is defined in App.jsx, which structures the application into three key sections:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Top Navigation Bar
+- Sidebar Navigation
+- Main Content Area (dynamic via routing)
+
+The layout uses a flex-based structure to ensure responsiveness and proper scaling across screen sizes.
+
+---
+
+### Navigation Bar
+
+The NavBar component provides:
+
+- Mobile menu icon (planned for sidebar toggle)
+- Application logo display
+- Navigation buttons (Projects, Daily Task)
+- Authentication UI:
+  - Login/Sign Up button (when logged out)
+  - Profile icon (when logged in)
+
+---
+
+### Sidebar
+
+The SideBar component includes:
+
+- Navigation icons:
+  - Home
+  - Profile
+- Settings section at the bottom
+
+---
+
+### Routing System
+
+Routing is implemented using react-router-dom:
+
+- Root route renders the main layout (App)
+- Nested routes render inside Outlet
+- Current route:
+  - "/" → Home component
+
+This structure allows easy scaling for future pages.
+
+---
+
+### Theme Management
+
+The application uses a ThemeProvider:
+
+- Supports theme-based styling (e.g., dark/light mode)
+- Applied globally using React Context
+
+---
+
+## Tech Stack
+
+- React
+- Tailwind CSS
+
+---
+
+## Folder Structure
+
+src/
+│
+├── Components/
+│   ├── NavBar.jsx
+│   ├── SideBar.jsx
+│   └── Home/
+│
+├── context/
+│   └── ThemeContext.jsx
+│
+├── App.jsx
+├── main.jsx
+├── index.css
+
+---
+
+## Features Implemented
+
+- Responsive layout (mobile + desktop)
+- Navigation bar with authentication UI
+- Sidebar navigation
+- Routing with nested layouts
+- Theme integration
+- Clean UI using Tailwind CSS
+
+---
+
+## Features Planned
+
+- Kanban board with drag-and-drop functionality
+- Project-based task management
+- Daily task tracking module
+- Theme toggle UI
+- Backend integration (Node.js)
+- User authentication system
+
+---
+
+
+## Design Philosophy
+
+- Minimal and clean UI
+- Scalable architecture
+- Reusable components
+- Clear separation of concerns
+
+---
+
+## Notes
+
+- This is currently a frontend-only implementation
+- Backend and authentication are not yet implemented
+- Mobile sidebar toggle is planned but not yet functional
