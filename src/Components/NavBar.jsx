@@ -2,11 +2,10 @@ import { Bars3Icon } from "@heroicons/react/24/outline";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import logo from '../assets/logo.png';
 import { useState } from "react";
-function NavBar(){
-    const [isLoggedIn,setIsLoggedIn]=useState(false);
+function NavBar({ isLoggedIn, setIsLoggedIn }){
 
-    const handleLogin=(status)=>{
-        setIsLoggedIn(status);
+    const handleLogin=()=>{
+        setIsLoggedIn(true);
     }
 
     return(
