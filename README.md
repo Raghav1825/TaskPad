@@ -73,23 +73,6 @@ The application uses a ThemeProvider:
 
 ---
 
-## Folder Structure
-
-src/
-│
-├── Components/
-│   ├── NavBar.jsx
-│   ├── SideBar.jsx
-│   └── Home/
-│
-├── context/
-│   └── ThemeContext.jsx
-│
-├── App.jsx
-├── main.jsx
-├── index.css
-
----
 
 ## Features Implemented
 
