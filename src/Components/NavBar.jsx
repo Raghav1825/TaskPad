@@ -2,18 +2,25 @@ import { Bars3Icon } from "@heroicons/react/24/outline";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import logo from '../assets/logo.png';
 import { useState } from "react";
+import SlideMenu from "./SlideMenu";
 function NavBar({ isLoggedIn, setIsLoggedIn }){
-
+    const [slideMenuStatus,setSlideMenuStatus]=useState(false);
     const handleLogin=()=>{
         setIsLoggedIn(true);
+    }
+    const handleSlideMenu=(status)=>{
+        setSlideMenuStatus(status)
     }
 
     return(
         <div className="min-w-full md:min-h-15 min-h-13  border-b-4 border-primary flex items-center p-1 justify-between">
             {/* Icon for mobile */}
             <div className="hover md:hidden">
-                <Bars3Icon className="w-10 md:hidden text-logo-bg"/>
+                <button className="cursor-pointer"><Bars3Icon className="w-10 md:hidden text-logo-bg" onClick={()=>handleSlideMenu(true)}/></button>
             </div>
+
+            <SlideMenu onClose={()=>handleSlideMenu(false)} openStatus={slideMenuStatus}/>
+
             {/* Website Icon */}
             <div className="h-12 min-w-32 bg-on-surface rounded-xl">
                 <img src={logo} className="max-w-full max-h-full object-contain"/>
