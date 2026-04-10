@@ -2,7 +2,7 @@ import { useState } from "react"
 function TodaysTaskSection(props){
     const [taskToday,setTaskToday]=useState(["Learn CSS better","Complete NPTEL Task","Do leetcode","Complete DAA Assignment" , "Start Probability lab assignment","Call Arjun for work","Complete Web task"])
     return(
-        <div className="w-full border-3 border-primary rounded-xl  mt-8 shadow-lg shadow-primary ">
+        <div className="w-full  rounded-xl  mt-8 shadow-lg shadow-primary ">
             { props.loginStatus && taskToday.length>0 &&
 
                 <div className="w-full  flex flex-col p-3 ">

@@ -3,7 +3,7 @@ import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 function RecentSection(props){
     const [recentProject,setRecentProjects]=useState(["Matlab","DAA","Expense Website","Spring Boot Learning","ML Learning"]);
     return(
-        <div className="w-full border-3 border-primary rounded-xl  mt-8 shadow-lg shadow-primary ">
+        <div className="w-full  rounded-xl  mt-8 shadow-lg shadow-primary ">
             { props.loginStatus && recentProject.length>0 &&
 
                 <div className="w-full  flex flex-col p-3 ">
