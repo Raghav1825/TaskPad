@@ -3,6 +3,7 @@ import { UserCircleIcon } from "@heroicons/react/24/outline";
 import logo from '../assets/logo.png';
 import { useState } from "react";
 import SlideMenu from "./SlideMenu";
+import { Link } from "react-router-dom";
 function NavBar({ isLoggedIn, setIsLoggedIn }){
     const [slideMenuStatus,setSlideMenuStatus]=useState(false);
     const handleLogin=()=>{
@@ -19,7 +20,7 @@ function NavBar({ isLoggedIn, setIsLoggedIn }){
                 <button className="cursor-pointer"><Bars3Icon className="w-10 md:hidden text-logo-bg" onClick={()=>handleSlideMenu(true)}/></button>
             </div>
 
-            <SlideMenu onClose={()=>handleSlideMenu(false)} openStatus={slideMenuStatus}/>
+            <SlideMenu onClose={()=>handleSlideMenu(false)} openStatus={slideMenuStatus} isLoggedIn={isLoggedIn} closeLogin={handleLogin}/>
 
             {/* Website Icon */}
             <div className="h-12 min-w-32 bg-on-surface rounded-xl">
@@ -28,7 +29,9 @@ function NavBar({ isLoggedIn, setIsLoggedIn }){
 
             {/* Project button */}
             <div className="hidden  w-2xs h-12 md:flex items-center justify-around flex-row">
-                <button className="h-9 w-24 text-accent rounded-xl  hover:scale-105 ease-in-out duration-200">Projects</button>
+                <Link to={"/projects"}>
+                    <button className="h-9 w-24 text-accent rounded-xl  hover:scale-105 ease-in-out duration-200">Projects</button>
+                </Link>
                 <button className="h-9 w-24 text-accent rounded-xl  hover:scale-105 ease-in-out duration-200">Daily Task</button>
             </div>
             {/* Login Button*/}

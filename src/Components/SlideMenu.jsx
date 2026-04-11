@@ -1,6 +1,6 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-function SlideMenu({onClose,openStatus}){
+function SlideMenu({onClose,openStatus,isLoggedIn,closeLogin}){
     if(!openStatus) return null;
 
     return(
@@ -12,14 +12,21 @@ function SlideMenu({onClose,openStatus}){
                     <XMarkIcon className="w-7 h-7 cursor-pointer" onClick={onClose}/>
                 </div>
                 <div className="flex flex-col gap-10 text-3xl">
+                    {!isLoggedIn &&
+                    <button className="h-9 w-36 text-lg bg-on-surface text-black rounded-xl shadow-md shadow-black hover:scale-105 ease-in-out duration-200" onClick={closeLogin}>    
+                        Login/Sign Up
+                    </button>
+                    }
                     <Link to={""}>  
                         <div onClick={onClose} className="hover:text-accent ease-in-out duration-200 cursor-pointer">
                             <p>Home</p>
                         </div>
                     </Link>
-                    <div onClick={onClose} className="hover:text-accent ease-in-out duration-200 cursor-pointer">
-                        <p>Project</p>
-                    </div>
+                    <Link to={"/projects"}>
+                        <div onClick={onClose} className="hover:text-accent ease-in-out duration-200 cursor-pointer">
+                            <p>Project</p>
+                        </div>
+                    </Link>
                     <div onClick={onClose} className="hover:text-accent ease-in-out duration-200 cursor-pointer">
                         <p>Daily Task</p>
                     </div>
