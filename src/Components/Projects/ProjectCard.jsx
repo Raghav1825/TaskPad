@@ -1,10 +1,21 @@
 import { useState } from "react";
 import { PencilIcon } from "@heroicons/react/24/outline";
-function ProjectCard({projectData}){
-    const [status,setStatus]=useState("");
+function ProjectCard({projectData,index,handelProjectStatusChange}){
     const typesOfStatus=["Not Started","In Progress","Done"];
+
+    const getStatusStyle=(status)=>{
+        if(status === "Not Started"){
+            return null;
+        }
+        else if(status === "In Progress"){
+            return "border-t-4 border-blue-500";
+        }
+        else if(status === "Done"){
+            return "border-t-4 border-green-500";
+        }
+    }
     return(
-        <div className="shadow-md shadow-primary rounded-2xl  w-48 lg:w-xs h-48 lg:h-52 flex flex-col hover:scale-105 duration-200 ease-in-out gap-2">
+        <div className={`shadow-md shadow-primary rounded-2xl w-full md:w-56 lg:w-xs h-48 lg:h-52 flex flex-col hover:scale-105 duration-200 ease-in-out gap-2 ${getStatusStyle(projectData.projectStatus)}`}>
             <div className="w-full h-12 p-2 text-xl">
                 <p>{projectData.projectName}</p>
             </div>
@@ -15,7 +26,9 @@ function ProjectCard({projectData}){
             <div className="p-2 w-full flex justify-between">
                 <div className="text-sm md:text-md flex items-center gap-1">
                     <label>Status: </label>
-                    <select className="bg-primary rounded-lg cursor-pointer">
+                    <select className="bg-primary rounded-lg cursor-pointer"  value={projectData.projectStatus}
+                        onChange={(e)=>handelProjectStatusChange(index,e.target.value)}
+                    >
                         {typesOfStatus.map((Status,index)=><option value={Status} key={index}>{Status}</option>)}
                     </select>
                 </div>

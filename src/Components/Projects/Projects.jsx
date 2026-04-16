@@ -3,6 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import ProjectCard from "./ProjectCard";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import ProjectModal from "../Modals/ProjectModal";
+import ProjectsAnalysisSection from "./ProjectsAnalysisSection";
 function Project(){
     const {isLoggedIn}=useOutletContext();
     const [projects, setProjects] = useState([
@@ -53,6 +54,45 @@ function Project(){
     const handelProjectModal=(status)=>{
         setModalStatus(status);
     }
+
+    const handelProjectStatusChange=(index,newStatus)=>{
+        const updatedProjects = projects.map((project,projectIndex)=>{
+            if(projectIndex === index){
+                return {
+                    ...project,
+                    projectStatus: newStatus
+                }
+            }
+            return project;
+        })
+
+        setProjects(updatedProjects);
+    }
+
+    const getProjectTrack=()=>{
+        const projectTrack = {
+            notStarted: 0,
+            inProgress: 0,
+            done: 0
+        }
+
+        projects.forEach((project)=>{
+            if(project.projectStatus === "Not Started"){
+                projectTrack.notStarted += 1;
+            }
+            else if(project.projectStatus === "In Progress"){
+                projectTrack.inProgress += 1;
+            }
+            else if(project.projectStatus === "Done"){
+                projectTrack.done += 1;
+            }
+        })
+
+        return projectTrack;
+    }
+    const projectTrack = getProjectTrack();
+
+
     return(
             <div className="w-full h-full flex flex-row">
                 {!isLoggedIn &&
@@ -61,7 +101,7 @@ function Project(){
                 }
                 {isLoggedIn &&
                     <div className="w-full h-full flex p-1">
-                        <div className="sticky top-0 z-10 flex flex-wrap gap-6 w-full md:w-3/4  p-2">
+                        <div className="flex flex-wrap gap-6 w-full md:w-3/4  p-2">
                             <div className="sticky top-0 z-10 bg-surface w-full h-border flex justify-between items-center pr-3 pl-3 pb-3 shadow-lg">
                                 <p className="text-4xl">Projects</p>
                                 <button onClick={()=>handelProjectModal(true)} className="flex gap-2 items-center justify-center rounded-2xl hover:scale-105 duration-200 bg-primary p-2 md:w-56">
@@ -71,11 +111,11 @@ function Project(){
                                 <ProjectModal isOpen={modalStatus} onClose={()=>handelProjectModal(false)} />
                             </div>
                             {
-                                projects.map((project,index)=><ProjectCard key={index} projectData={project}/>)
+                                projects.map((project,index)=><ProjectCard key={index} projectData={project} index={index} handelProjectStatusChange={handelProjectStatusChange}/>)
                             }
                         </div>
-                        <div className="hidden md:flex w-1/4  p-2">
-
+                        <div className="hidden md:block p-2 fixed right-4 top-16 w-[23%] h-[90vh]">
+                                <ProjectsAnalysisSection projectTrack={projectTrack}/>
                         </div>
                     </div>
                 }
