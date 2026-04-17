@@ -55,6 +55,23 @@ function Project(){
         setModalStatus(status);
     }
 
+    const handleProjectEdit = (index, updatedProject) => {
+        const updatedProjects = projects.map((project, projectIndex) => {
+            if (projectIndex === index) {
+                return {
+                    ...project,
+                    projectName: updatedProject.projectName,
+                    projectDescription: updatedProject.projectDescription,
+                };
+            }
+
+            return project;
+        });
+
+        setProjects(updatedProjects);
+    };
+
+
     const handelProjectStatusChange=(index,newStatus)=>{
         const updatedProjects = projects.map((project,projectIndex)=>{
             if(projectIndex === index){
@@ -111,7 +128,15 @@ function Project(){
                                 <ProjectModal isOpen={modalStatus} onClose={()=>handelProjectModal(false)} />
                             </div>
                             {
-                                projects.map((project,index)=><ProjectCard key={index} projectData={project} index={index} handelProjectStatusChange={handelProjectStatusChange}/>)
+                                projects.map((project,index)=>
+                                    <ProjectCard 
+                                    key={index} 
+                                    projectData={project} 
+                                    index={index} 
+                                    handelProjectStatusChange={handelProjectStatusChange}
+                                    handleProjectEdit={handleProjectEdit}
+                                    />
+                                )
                             }
                         </div>
                         <div className="hidden md:block p-2 fixed right-4 top-16 w-[23%] h-[90vh]">

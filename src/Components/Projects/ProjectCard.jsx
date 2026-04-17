@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PencilIcon } from "@heroicons/react/24/outline";
-function ProjectCard({projectData,index,handelProjectStatusChange}){
+import EditProjectModal from "../Modals/EditProjectModal";
+function ProjectCard({projectData,index,handelProjectStatusChange,handleProjectEdit}){
     const typesOfStatus=["Not Started","In Progress","Done"];
 
     const getStatusStyle=(status)=>{
@@ -14,29 +15,45 @@ function ProjectCard({projectData,index,handelProjectStatusChange}){
             return "border-t-4 border-green-500";
         }
     }
+
+    const [openEdit,setOpenEdit]=useState(false);
+
+    const handleEdit=(status)=>{
+        setOpenEdit(status);
+    }
+
     return(
-        <div className={`shadow-md shadow-primary rounded-2xl w-full md:w-56 lg:w-xs h-48 lg:h-52 flex flex-col hover:scale-105 duration-200 ease-in-out gap-2 ${getStatusStyle(projectData.projectStatus)}`}>
-            <div className="w-full h-12 p-2 text-xl">
-                <p>{projectData.projectName}</p>
-            </div>
-            <div className="w-full h-24 p-2 overflow-hidden">
-                <p className="underline underline-offset-4 decoration-dashed">Description</p>
-                <p className="text-sm text-on-surface/50">{projectData.projectDescription}</p>
-            </div>
-            <div className="p-2 w-full flex justify-between">
-                <div className="text-sm md:text-md flex items-center gap-1">
-                    <label>Status: </label>
-                    <select className="bg-primary rounded-lg cursor-pointer"  value={projectData.projectStatus}
-                        onChange={(e)=>handelProjectStatusChange(index,e.target.value)}
-                    >
-                        {typesOfStatus.map((Status,index)=><option value={Status} key={index}>{Status}</option>)}
-                    </select>
+        <>
+            <div className={`shadow-md shadow-primary rounded-2xl w-full md:w-56 lg:w-xs h-48 lg:h-52 flex flex-col hover:scale-105 duration-200 ease-in-out gap-2 ${getStatusStyle(projectData.projectStatus)}`}>
+                <div className="w-full h-12 p-2 text-xl">
+                    <p>{projectData.projectName}</p>
                 </div>
-                <button>
-                    <PencilIcon className="w-5 h-5 cursor-pointer mr-1"/>
-                </button>
+                <div className="w-full h-24 p-2 overflow-hidden">
+                    <p className="underline underline-offset-4 decoration-dashed">Description</p>
+                    <p className="text-sm text-on-surface/50">{projectData.projectDescription}</p>
+                </div>
+                <div className="p-2 w-full flex justify-between">
+                    <div className="text-sm md:text-md flex items-center gap-1">
+                        <label>Status: </label>
+                        <select className="bg-primary rounded-lg cursor-pointer"  value={projectData.projectStatus}
+                            onChange={(e)=>handelProjectStatusChange(index,e.target.value)}
+                        >
+                            {typesOfStatus.map((Status,index)=><option value={Status} key={index}>{Status}</option>)}
+                        </select>
+                    </div>
+                    <button>
+                        <PencilIcon className="w-5 h-5 cursor-pointer mr-1" onClick={()=>handleEdit(true)}/>
+                    </button>
+                </div>
             </div>
-        </div>
+
+            <EditProjectModal 
+                        isOpen={openEdit} 
+                        projectData={projectData} 
+                        onClose={()=>handleEdit(false)}
+                        onSave={(updatedProject) => handleProjectEdit(index, updatedProject)}   
+            />
+        </>
     )
 }
 export default ProjectCard
