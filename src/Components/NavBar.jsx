@@ -32,7 +32,10 @@ function NavBar({ isLoggedIn, setIsLoggedIn }){
                 <Link to={"/projects"}>
                     <button className="h-9 w-24 text-accent rounded-xl  hover:scale-105 ease-in-out duration-200">Projects</button>
                 </Link>
-                <button className="h-9 w-24 text-accent rounded-xl  hover:scale-105 ease-in-out duration-200">Daily Task</button>
+                
+                <Link to={"/dailytask"}>
+                    <button className="h-9 w-24 text-accent rounded-xl  hover:scale-105 ease-in-out duration-200">Daily Task</button>
+                </Link>
             </div>
             {/* Login Button*/}
             {!isLoggedIn &&

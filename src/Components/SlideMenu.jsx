@@ -27,9 +27,12 @@ function SlideMenu({onClose,openStatus,isLoggedIn,closeLogin}){
                             <p>Project</p>
                         </div>
                     </Link>
-                    <div onClick={onClose} className="hover:text-accent ease-in-out duration-200 cursor-pointer">
-                        <p>Daily Task</p>
-                    </div>
+
+                    <Link to={"/dailytask"}>
+                        <div onClick={onClose} className="hover:text-accent ease-in-out duration-200 cursor-pointer">
+                            <p>Daily Task</p>
+                        </div>
+                    </Link>
                     <div onClick={onClose} className="hover:text-accent ease-in-out duration-200 cursor-pointer">
                         <p>Profile</p>
                     </div>

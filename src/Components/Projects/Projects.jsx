@@ -119,7 +119,7 @@ function Project(){
                 {isLoggedIn &&
                     <div className="w-full h-full flex p-1">
                         <div className="flex flex-wrap gap-6 w-full md:w-3/4  p-2">
-                            <div className="sticky top-0 z-10 bg-surface w-full h-border flex justify-between items-center pr-3 pl-3 pb-3 shadow-lg">
+                            <div className="sticky top-0 z-10 bg-surface w-full  flex justify-between items-center pr-3 pl-3 pb-3 shadow-lg">
                                 <p className="text-4xl">Projects</p>
                                 <button onClick={()=>handelProjectModal(true)} className="flex gap-2 items-center justify-center rounded-2xl hover:scale-105 duration-200 bg-primary p-2 md:w-56">
                                     <PlusIcon className="w-6 h-6"/>

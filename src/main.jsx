@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext.jsx'
 import Home from './Components/Home/Home.jsx'
 import Project from './Components/Projects/Projects.jsx'
+import DailyTask from './Components/DailyTask/DailyTask.jsx';
 
 const router= createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router= createBrowserRouter([
         {
           path:"projects",
           element:<Project/>
+        },
+        {
+          path:"dailytask",
+          element:<DailyTask/>
         }
     ]
   }
