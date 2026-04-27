@@ -1,11 +1,8 @@
-import { useState } from "react";
+import { useState} from "react";
 import { useOutletContext } from "react-router-dom";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import DailyTaskModal from "../Modals/DailyTaskModal";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import { TrashIcon } from "@heroicons/react/24/outline";
-import { PencilIcon } from "@heroicons/react/24/outline";
-import { CalendarDaysIcon } from "@heroicons/react/24/outline";
+import TaskCard from "./TaskCard";
 function DailyTask(){
     const {isLoggedIn}=useOutletContext();
     const [modalStatus,setModalStatus]=useState(false);
@@ -22,23 +19,50 @@ function DailyTask(){
         id: nextId,
         task,
         taskDescription,
+        date:null,
+        completed:false,
         };
-        setDailyTask((prev) => [...prev, newTask]);
+        setDailyTask((prev) => {
+            const incompleteTasks = prev.filter((task) => !task.completed);
+            const completedTasks = prev.filter((task) => task.completed);
+
+            return [...incompleteTasks, newTask, ...completedTasks];
+        });
         setNextId((prev) => prev + 1);
     };
+
+    const sortTasks = (tasks) => [
+    ...tasks.filter((task) => !task.completed),
+    ...tasks.filter((task) => task.completed),
+    ];
+
+    const handleDateChange=(id,date)=>{
+        setDailyTask((prev)=>
+            prev.map((task)=>
+                task.id===id? {...task,date:date}:task
+            )
+        )
+    }
 
     const handleTaskDeletion=(id)=>{
         let updatedDailyTask=dailyTask.filter((t)=>t.id!==id);
         setDailyTask(updatedDailyTask);
     }
 
-    const handleTaskBg=(e)=>{
-        if(e.target.value){
-            
-        }
-        else{
+    const handleTaskDone=(id,checked)=>{
+        setDailyTask((prev) => {
+        const updatedTasks = prev.map((task) =>
+            task.id === id ? { ...task, completed: checked } : task
+            );
 
-        }
+            return sortTasks(updatedTasks);
+        });
+    }
+
+    const handleTaskEdit=(id,newName,newDescription)=>{
+        setDailyTask((prev)=>
+            prev.map((task)=>task.id===id?{...task,task:newName,taskDescription:newDescription}:task)
+        )
     }
 
     return(
@@ -62,20 +86,17 @@ function DailyTask(){
                     <DailyTaskModal isOpen={modalStatus} onClose={()=>handelTaskModal(false)} onAddTask={handleTaskAddition}/>
 
                     <div className="flex flex-col gap-4 p-3">
-                        {dailyTask.map((task)=>(
-                            <div key={task.id} className="w-full flex justify-between items-center p-3 bg-accent/60">
-                                <p>{task.task}</p>
-                                <p>Due Date</p>
-                                <div className="flex justify-between w-48 items-center">
-                                    <input type="checkbox" onChange={handleTaskBg}/>
-                                    <CalendarDaysIcon className="w-5 h-5 hover:text-blue-400"/>
-                                    <input type="date" className="hidden"/>
-                                    <PencilIcon className="w-5 h-5 hover:text-blue-400"/>
-                                    <TrashIcon className="w-5 h-5 hover:text-red-400" onClick={() => handleTaskDeletion(task.id)}/>
-                                    <ChevronDownIcon className="w-5 h-5 hover:text-blue-400"/>
-                                </div>
-                            </div>
-                        ))
+                        {
+                            dailyTask.map((task)=>(
+                                <TaskCard
+                                    key={task.id} 
+                                    task={task} 
+                                    onDeleteTask={handleTaskDeletion} 
+                                    onDateChange={handleDateChange}
+                                    onTaskCompleted={handleTaskDone}
+                                    handleTaskEdit={handleTaskEdit}
+                                />
+                            ))
                         }
                     </div>
                 </div>
