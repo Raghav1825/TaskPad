@@ -17,24 +17,24 @@ function NavBar({ isLoggedIn, setIsLoggedIn }){
         <div className="min-w-full md:min-h-15 min-h-13  border-b-4 border-primary flex items-center p-1 justify-between">
             {/* Icon for mobile */}
             <div className="hover md:hidden">
-                <button className="cursor-pointer"><Bars3Icon className="w-10 md:hidden text-logo-bg" onClick={()=>handleSlideMenu(true)}/></button>
+                <button className="cursor-pointer"><Bars3Icon className="w-10 md:hidden text-on-surface" onClick={()=>handleSlideMenu(true)}/></button>
             </div>
 
             <SlideMenu onClose={()=>handleSlideMenu(false)} openStatus={slideMenuStatus} isLoggedIn={isLoggedIn} closeLogin={handleLogin}/>
 
             {/* Website Icon */}
-            <div className="h-12 min-w-32 bg-on-surface rounded-xl">
+            <div className="h-12 min-w-32 bg-logo-bg rounded-xl">
                 <img src={logo} className="max-w-full max-h-full object-contain"/>
             </div>
 
             {/* Project button */}
             <div className="hidden  w-2xs h-12 md:flex items-center justify-around flex-row">
                 <Link to={"/projects"}>
-                    <button className="h-9 w-24 text-accent rounded-xl  hover:scale-105 ease-in-out duration-200">Projects</button>
+                    <button className="h-9 w-24 text-primary rounded-xl  hover:scale-105 ease-in-out duration-200">Projects</button>
                 </Link>
                 
                 <Link to={"/dailytask"}>
-                    <button className="h-9 w-24 text-accent rounded-xl  hover:scale-105 ease-in-out duration-200">Daily Task</button>
+                    <button className="h-9 w-24 text-primary rounded-xl  hover:scale-105 ease-in-out duration-200">Daily Task</button>
                 </Link>
             </div>
             {/* Login Button*/}

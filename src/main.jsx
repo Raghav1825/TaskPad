@@ -8,6 +8,7 @@ import { ThemeProvider } from './context/ThemeContext.jsx'
 import Home from './Components/Home/Home.jsx'
 import Project from './Components/Projects/Projects.jsx'
 import DailyTask from './Components/DailyTask/DailyTask.jsx';
+import Settings from './Components/Settings/Settings.jsx';
 
 const router= createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router= createBrowserRouter([
         {
           path:"dailytask",
           element:<DailyTask/>
+        },
+        {
+          path:"settings",
+          element:<Settings/>
         }
     ]
   }

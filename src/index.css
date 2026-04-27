@@ -13,6 +13,17 @@ html, body, #root {
   --color-btn-login-text: #000000;
 }
 
+[data-theme="light"]{
+  --color-primary:#982598;
+  --color-accent:#E491C9;
+  --color-surface:#F1E9E9;
+  --color-on-surface:#15173D;
+  --color-logo-bg:    #F1E9E9;
+  --color-btn-login-bg:   #0f0f0f;
+  --color-btn-login-text:#fffefe;
+}
+
+
 /* Entire scrollbar width */
 ::-webkit-scrollbar {
   width: 8px;

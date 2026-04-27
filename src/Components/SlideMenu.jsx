@@ -37,10 +37,12 @@ function SlideMenu({onClose,openStatus,isLoggedIn,closeLogin}){
                         <p>Profile</p>
                     </div>
                 </div>
-                <div className="hover:text-accent ease-in-out duration-200 fixed bottom-9 text-xl cursor-pointer" onClick={onClose}>
-                    <div className="w-[90%] border-t-2 border-gray-500 mb-2"></div>
-                    <p>Settings</p>
-                </div>
+                <Link to={"/settings"}>
+                    <div className="hover:text-accent ease-in-out duration-200 fixed bottom-9 text-xl cursor-pointer" onClick={onClose}>
+                        <div className="w-[90%] border-t-2 border-gray-500 mb-2"></div>
+                        <p>Settings</p>
+                    </div>
+                </Link>
             </div>
         </div>
     );

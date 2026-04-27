@@ -18,11 +18,13 @@ function SideBar(){
                     <p>Profile</p>
                 </div>
             </div>
-            <div className="text-on-surface h-20 w-full flex flex-col items-center justify-center">
-                <div className="w-[90%] border-t-2 border-gray-500 mb-4"></div>
-                <Cog6ToothIcon className="w-7 h-7"/>
-                <p>Settings</p>
-            </div>
+            <Link to={"/settings"}>
+                <div className="text-on-surface h-20 w-full flex flex-col items-center justify-center">
+                    <div className="w-[90%] border-t-2 border-gray-500 mb-4"></div>
+                    <Cog6ToothIcon className="w-7 h-7"/>
+                    <p>Settings</p>
+                </div>
+            </Link>
         </div>
     )
 }
