@@ -9,6 +9,7 @@ import Home from './Components/Home/Home.jsx'
 import Project from './Components/Projects/Projects.jsx'
 import DailyTask from './Components/DailyTask/DailyTask.jsx';
 import Settings from './Components/Settings/Settings.jsx';
+import MainBoard from './Components/Board/MainBoard.jsx';
 
 const router= createBrowserRouter([
   {
@@ -21,7 +22,7 @@ const router= createBrowserRouter([
         },
         {
           path:"projects",
-          element:<Project/>
+          element:<Project/>,
         },
         {
           path:"dailytask",
@@ -30,6 +31,10 @@ const router= createBrowserRouter([
         {
           path:"settings",
           element:<Settings/>
+        },
+        {
+          path:"projects/:projectId",
+          element:<MainBoard/>
         }
     ]
   }

@@ -4,45 +4,55 @@ import ProjectCard from "./ProjectCard";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import ProjectModal from "../Modals/ProjectModal";
 import ProjectsAnalysisSection from "./ProjectsAnalysisSection";
+import { useNavigate } from "react-router-dom";
 function Project(){
     const {isLoggedIn}=useOutletContext();
+    const navigate=useNavigate();
     const [projects, setProjects] = useState([
         {
+            projectId:1,
             projectName: "Matlab",
             projectDescription: "Working on MATLAB programs and simulations for academic assignments and problem solving.",
             projectStatus: "Not Started"
         },
         {
+            projectId:2,
             projectName: "DAA",
             projectDescription: "Studying Design and Analysis of Algorithms including sorting, graph algorithms, and complexity.",
             projectStatus: "Not Started"
         },
         {
+            projectId:3,
             projectName: "Expense Website",
             projectDescription: "Building a web app to track expenses with features like adding, editing, and visualizing spending.",
             projectStatus: "Not Started"
         },
         {
+            projectId:4,
             projectName: "Spring Boot Learning",
             projectDescription: "Learning backend development using Spring Boot, REST APIs, and database integration.",
             projectStatus: "Not Started"
         },
         {
+            projectId:5,
             projectName: "ML Learning",
             projectDescription: "Exploring machine learning concepts including regression, classification, and model training.",
             projectStatus: "Not Started"
         },
         {
+            projectId:6,
             projectName: "KanBan Board Website",
             projectDescription: "Developing a Kanban board using React and Tailwind with task management and project tracking features.",
             projectStatus: "Not Started"
         },
         {
+            projectId:7,
             projectName: "ML Learning",
             projectDescription: "Exploring machine learning concepts including regression, classification, and model training.",
             projectStatus: "Not Started"
         },
         {
+            projectId:8,
             projectName: "KanBan Board Website",
             projectDescription: "Developing a Kanban board using React and Tailwind with task management and project tracking features.",
             projectStatus: "Not Started"
@@ -130,11 +140,12 @@ function Project(){
                             {
                                 projects.map((project,index)=>
                                     <ProjectCard 
-                                    key={index} 
+                                    key={project.projectId} 
                                     projectData={project} 
                                     index={index} 
                                     handelProjectStatusChange={handelProjectStatusChange}
                                     handleProjectEdit={handleProjectEdit}
+                                    onOpenProject={()=>navigate(`/projects/${project.projectId}`)}
                                     />
                                 )
                             }
