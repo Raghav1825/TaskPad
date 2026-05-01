@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import TaskNotStarted from "./TaskNotStarted";
 import TaskInProgress from "./TaskInProgress";
 import TaskDone from "./TaskDone";
@@ -69,14 +69,14 @@ function MainBoard(){
 
     return(
         <div className="w-full h-full p-1">
-                <div className="w-full shadow-2xl flex flex-col mb-3">
+                <div className="w-full shadow-xl flex flex-col mb-3">
                     <div className="w-full flex justify-between p-3">
                         <p className="text-3xl">Project Name</p>
 
                         <div className="flex gap-4 items-center">
                             <p className="text-on-surface/50 text-sm sm:block hidden">Owner: Raghav Arora</p>
                             <button onClick={handleDescriptionDispay} className="cursor-pointer bg-primary p-2 rounded-xl">{!descriptionDisplay?"Show Description":"Hide Description"}</button>
-                            <ExclamationCircleIcon className="w-9 h-9 sm:hidden"/>
+                            <InformationCircleIcon className="w-9 h-9 md:hidden"/>
                         </div>
                     </div>
 
@@ -90,8 +90,8 @@ function MainBoard(){
                     }
                 </div>
 
-                <div className="w-full flex-1 min-h-0 flex ">
-                    <div className="w-6xl flex gap-6">
+                <div className="w-full flex-1 min-h-0 flex">
+                    <div className="w-6xl md:flex gap-6 block">
                         <TaskNotStarted 
                             tasks={notStartedTasks} 
                             statusChange={handleStatusChange}
@@ -108,7 +108,7 @@ function MainBoard(){
                             taskDeletion={DeleteTask}
                         />
                     </div>
-                    <div className="w-2xs border p-1">
+                    <div className="w-2xs border p-1 hidden md:block">
 
                     </div>
                 </div>
