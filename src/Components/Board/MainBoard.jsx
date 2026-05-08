@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import { InformationCircleIcon ,TrashIcon ,PencilIcon } from "@heroicons/react/24/outline";
 import TaskNotStarted from "./TaskNotStarted";
 import TaskInProgress from "./TaskInProgress";
 import TaskDone from "./TaskDone";
+import AnalyseBox from "./AnalyseBox";
+import MemberSection from "./MembersSection";
 function MainBoard(){
     const {projectId}=useParams();
 
@@ -67,15 +69,27 @@ function MainBoard(){
         setSampleTasks((prev)=>prev.filter((task)=>task.id!==id));
     }
 
+    const taskTrack = {
+        notStarted: notStartedTasks.length,
+        inProgress: inProgressTasks.length,
+        done: doneTasks.length,
+    };
     return(
         <div className="w-full h-full p-1">
                 <div className="w-full shadow-xl flex flex-col mb-3">
                     <div className="w-full flex justify-between p-3">
-                        <p className="text-3xl">Project Name</p>
+                        <p className="text-3xl sm:mr-0 mr-2">Project Name</p>
 
                         <div className="flex gap-4 items-center">
                             <p className="text-on-surface/50 text-sm sm:block hidden">Owner: Raghav Arora</p>
-                            <button onClick={handleDescriptionDispay} className="cursor-pointer bg-primary p-2 rounded-xl">{!descriptionDisplay?"Show Description":"Hide Description"}</button>
+                            <button onClick={handleDescriptionDispay} className="cursor-pointer bg-primary p-1 rounded-xl">{!descriptionDisplay?"Show Description":"Hide Description"}</button>
+                            <button className="flex items-center justify-between w-20 bg-primary p-2 rounded-xl cursor-pointer">
+                                <PencilIcon className="w-5 h-5"/>
+                                <p>Edit</p>
+                            </button>
+                            <div className="bg-red-400 p-1 rounded-xl hover:scale-105 ease-in-out duration-200 cursor-pointer">
+                                <TrashIcon className="w-7 h-7"/>
+                            </div>
                             <InformationCircleIcon className="w-9 h-9 md:hidden"/>
                         </div>
                     </div>
@@ -108,8 +122,9 @@ function MainBoard(){
                             taskDeletion={DeleteTask}
                         />
                     </div>
-                    <div className="w-2xs border p-1 hidden md:block">
-
+                    <div className="w-2xs pl-2 hidden md:flex flex-col gap-6">
+                        <AnalyseBox taskTrack={taskTrack}/>
+                        <MemberSection/>
                     </div>
                 </div>
         </div>
