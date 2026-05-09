@@ -13,10 +13,12 @@ function SideBar(){
                         <p>Home</p>
                     </div>
                 </Link>
-                <div className="text-on-surface h-15 w-full flex flex-col items-center justify-center hover:scale-105 ease-in-out duration-300 hover:text-accent">
-                    <UserIcon className="w-7 h-7"/>
-                    <p>Profile</p>
-                </div>
+                <Link to={"/profile"}>
+                    <div className="text-on-surface h-15 w-full flex flex-col items-center justify-center hover:scale-105 ease-in-out duration-300 hover:text-accent">
+                        <UserIcon className="w-7 h-7"/>
+                        <p>Profile</p>
+                    </div>
+                </Link>
             </div>
             <Link to={"/settings"}>
                 <div className="text-on-surface h-20 w-full flex flex-col items-center justify-center">
