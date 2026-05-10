@@ -5,6 +5,7 @@ import RecentSection from "./RecentSection";
 import TodaysTaskSection from "./TodaysTaskSection";
 import ProjectModal from "../Modals/ProjectModal";
 import { useState } from "react";
+import DemoImage from "../../assets/demopage.png"
 function Home(){
     
     const {isLoggedIn}=useOutletContext();
@@ -29,6 +30,11 @@ function Home(){
                 className="text-xl md:text-3xl lg:text-5xl"
                 />
             </div>
+            {!isLoggedIn&&
+                <div className="w-full mas-w-5xl px-3">
+                    <img src={DemoImage} className="w-full h-4/5  rounded-2xl drop-shadow-2xl  drop-shadow-primary"/>
+                </div>
+            }
             <TodaysTaskSection loginStatus={isLoggedIn}/>
             <RecentSection loginStatus={isLoggedIn}/>
         </div>
