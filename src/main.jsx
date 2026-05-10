@@ -11,6 +11,8 @@ import DailyTask from './Components/DailyTask/DailyTask.jsx';
 import Settings from './Components/Settings/Settings.jsx';
 import MainBoard from './Components/Board/MainBoard.jsx';
 import Profile from './Components/Profile/Profile.jsx';
+import Login from './Components/LoginPage/Login.jsx';
+import SignUp from './Components/LoginPage/SignUp.jsx';
 
 const router= createBrowserRouter([
   {
@@ -40,6 +42,14 @@ const router= createBrowserRouter([
         {
           path:"profile",
           element:<Profile/>
+        },
+        {
+          path:"login",
+          element:<Login/>
+        },
+        {
+          path:"signup",
+          element:<SignUp/>
         }
     ]
   }
