@@ -1,10 +1,20 @@
 import { useRef , useState } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { PencilIcon } from "@heroicons/react/24/outline";
+import { PencilIcon , Bars2Icon } from "@heroicons/react/24/outline";
 import { CalendarDaysIcon } from "@heroicons/react/24/outline";
 import EditDailyTaskModal from "../Modals/EditDailyTaskModal";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 function TaskCard({task,onDeleteTask,onDateChange,onTaskCompleted,handleTaskEdit}){
+
+    const {attributes,listeners, setNodeRef,setActivatorNodeRef, transform , transition}=useSortable({id:task.id});
+
+    const style={
+        transition,
+        transform: CSS.Transform.toString(transform)
+    }
+
     const dateInputRef = useRef(null);
 
     const getCompleteStatus=(id,e)=>{
@@ -23,8 +33,11 @@ function TaskCard({task,onDeleteTask,onDateChange,onTaskCompleted,handleTaskEdit
     }
     return (
         <div className="flex flex-col">
-            <div key={task.id} className={`w-full flex justify-between items-center p-3 ${task.completed ? "bg-accent/50 line-through" : "bg-accent/80"}`}>
-                <p>{task.task}</p>
+            <div ref={setNodeRef}  style={style} key={task.id} className={`w-full flex justify-between items-center p-3 ${task.completed ? "bg-accent/50 line-through" : "bg-accent/80"}`}>
+                <div className="flex items-center gap-1">
+                    <Bars2Icon className="w-5 h-5 cursor-grab active:cursor-grabbing" ref={setActivatorNodeRef} {...attributes} {...listeners}/>
+                    <p>{task.task}</p>
+                </div>
                 <p>{task.date || "No due date"}</p>
                 <div className="flex justify-between w-48 items-center">
                     <input type="checkbox" checked={task.completed} onChange={(e)=>getCompleteStatus(task.id,e)}/>

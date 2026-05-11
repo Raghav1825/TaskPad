@@ -3,6 +3,8 @@ import { useOutletContext } from "react-router-dom";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import DailyTaskModal from "../Modals/DailyTaskModal";
 import TaskCard from "./TaskCard";
+import { DndContext,KeyboardSensor,PointerSensor,TouchSensor,closestCorners, useSensor, useSensors } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy ,arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 function DailyTask(){
     const {isLoggedIn}=useOutletContext();
     const [modalStatus,setModalStatus]=useState(false);
@@ -65,6 +67,26 @@ function DailyTask(){
         )
     }
 
+    const handleDragEnd=(e)=>{
+        const {active,over}=e;
+
+        if(!over ||active.id === over.id) return;
+
+        setDailyTask((prev)=>{
+            const oldIndex = prev.findIndex((task) => task.id === active.id);
+            const newIndex = prev.findIndex((task) => task.id === over.id);
+
+            return arrayMove(prev, oldIndex, newIndex);
+        });
+    }
+
+    const sensors=useSensors(
+        useSensor(PointerSensor),
+        useSensor(TouchSensor),
+        useSensor(KeyboardSensor,{
+            coordinateGetter:sortableKeyboardCoordinates,
+        })
+    )
     return(
         <div className="w-full h-full flex flex-row">
             {!isLoggedIn&&
@@ -85,20 +107,24 @@ function DailyTask(){
 
                     <DailyTaskModal isOpen={modalStatus} onClose={()=>handelTaskModal(false)} onAddTask={handleTaskAddition}/>
 
-                    <div className="flex flex-col gap-4 p-3">
-                        {
-                            dailyTask.map((task)=>(
-                                <TaskCard
-                                    key={task.id} 
-                                    task={task} 
-                                    onDeleteTask={handleTaskDeletion} 
-                                    onDateChange={handleDateChange}
-                                    onTaskCompleted={handleTaskDone}
-                                    handleTaskEdit={handleTaskEdit}
-                                />
-                            ))
-                        }
-                    </div>
+                    <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd} sensors={sensors}>
+                        <div className="flex flex-col gap-4 p-3">
+                            <SortableContext items={dailyTask.map((task)=>task.id)} strategy={verticalListSortingStrategy}>
+                                {
+                                    dailyTask.map((task)=>(
+                                        <TaskCard
+                                            key={task.id} 
+                                            task={task} 
+                                            onDeleteTask={handleTaskDeletion} 
+                                            onDateChange={handleDateChange}
+                                            onTaskCompleted={handleTaskDone}
+                                            handleTaskEdit={handleTaskEdit}
+                                        />
+                                    ))
+                                }
+                            </SortableContext>
+                        </div>
+                    </DndContext>
                 </div>
             }
         </div>
