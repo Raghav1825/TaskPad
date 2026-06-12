@@ -1,11 +1,21 @@
 import { useOutletContext } from "react-router-dom";
 import { SunIcon , MoonIcon,ArrowRightStartOnRectangleIcon ,TrashIcon } from "@heroicons/react/24/outline";
 import {useTheme} from "../../context/ThemeContext";
+import api from "../../api/apiClient";
 function Settings(){
 
     const {isLoggedIn}=useOutletContext();
 
     const {theme, toggleTheme}=useTheme();
+
+    const handleLogout=async()=>{
+      try {
+        const response = await api.post("/users/logout");
+        window.location.assign('/');
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
     return(
         <div className="w-full h-full flex flex-col gap-10 ">
@@ -36,7 +46,7 @@ function Settings(){
             <div className="flex flex-col  gap-10">
                 <button className="flex  sm:w-1/4 items-center h-12 justify-between text-2xl p-3">
                     <p>Log Out</p>
-                    <ArrowRightStartOnRectangleIcon className="w-8 h-8"/>
+                    <ArrowRightStartOnRectangleIcon className="w-8 h-8" onClick={handleLogout}/>
                 </button>
 
                 <button className="flex items-center justify-between rounded-xl hover:bg-red-500 hover:text-white p-3 sm:w-1/4 text-red-400 ease-in-out duration-200">

@@ -1,9 +1,27 @@
-import { Outlet } from "react-router-dom"
-import NavBar from "./Components/NavBar"
-import SideBar from "./Components/SideBar"
-import { useState } from "react"
+import { Outlet } from "react-router-dom";
+import NavBar from "./Components/NavBar";
+import SideBar from "./Components/SideBar";
+import { useState,useEffect } from "react";
+import api from "./api/apiClient";
+
 function App() {
   const [isLoggedIn,setIsLoggedIn]=useState(false);
+
+  useEffect(()=>{
+    const checkAuth = async()=>{
+      try {
+        const response = await api.get("/users/current-user");
+        if(response){
+          setIsLoggedIn(true);
+        }
+      } catch (error) {
+        console.log(error);
+        setIsLoggedIn(false);
+      }
+    }
+    checkAuth();
+  },[])
+
   return (
     <div className="h-screen w-full bg-surface text-on-surface font-sans flex flex-col">
         <NavBar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
