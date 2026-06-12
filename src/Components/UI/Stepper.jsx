@@ -49,36 +49,36 @@ export default function Stepper({
     return false;
   };
 
-  const updateStep = newStep => {
+  const updateStep = async(newStep) => {
     setCurrentStep(newStep);
     if (newStep > totalSteps) {
-      onFinalStepCompleted();
+      await onFinalStepCompleted();
       window.location.assign('/');
     }
     else onStepChange(newStep);
   };
 
-  const handleBack = () => {
+  const handleBack = async() => {
     if (currentStep > 1) {
       setDirection(-1);
-      updateStep(currentStep - 1);
+      await updateStep(currentStep - 1);
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async() => {
     if (!validateCurrentStep()) return;
 
     if (!isLastStep) {
       setDirection(1);
-      updateStep(currentStep + 1);
+      await updateStep(currentStep + 1);
     }
   };
 
-  const handleComplete = () => {
+  const handleComplete = async() => {
     if (!validateCurrentStep()) return;
 
     setDirection(1);
-    updateStep(totalSteps + 1);
+    await updateStep(totalSteps + 1);
   };
 
   const handleStepIndicatorClick = clicked => {

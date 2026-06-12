@@ -13,9 +13,11 @@ function SlideMenu({onClose,openStatus,isLoggedIn,closeLogin}){
                 </div>
                 <div className="flex flex-col gap-10 text-3xl">
                     {!isLoggedIn &&
-                    <button className="h-9 w-36 text-lg bg-btn-login-bg text-btn-login-text rounded-xl shadow-md shadow-black hover:scale-105 ease-in-out duration-200" onClick={closeLogin}>    
-                        Login/Sign Up
-                    </button>
+                        <Link to={"/login"}>
+                            <button className="h-9 w-36 text-lg bg-btn-login-bg text-btn-login-text rounded-xl shadow-md shadow-black hover:scale-105 ease-in-out duration-200" onClick={closeLogin}>    
+                                Login/Sign Up
+                            </button>
+                        </Link>
                     }
                     <Link to={""}>  
                         <div onClick={onClose} className="hover:text-accent ease-in-out duration-200 cursor-pointer">

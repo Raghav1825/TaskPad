@@ -39,9 +39,11 @@ function NavBar({ isLoggedIn, setIsLoggedIn }){
             </div>
             {/* Login Button*/}
             {!isLoggedIn &&
-                <button className="hidden md:block h-9 w-36 bg-btn-login-bg text-btn-login-text rounded-xl shadow-md shadow-black hover:scale-105 ease-in-out duration-200" onClick={handleLogin}>    
-                    Login/Sign Up
-                </button>
+                <Link to={"/login"}>
+                    <button className="hidden md:block h-9 w-36 bg-btn-login-bg text-btn-login-text rounded-xl shadow-md shadow-black hover:scale-105 ease-in-out duration-200" onClick={handleLogin}>    
+                        Login/Sign Up
+                    </button>
+                </Link>
             }
             {/* Profile */}
             {isLoggedIn &&
