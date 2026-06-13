@@ -1,99 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import ProjectCard from "./ProjectCard";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import ProjectModal from "../Modals/ProjectModal";
 import ProjectsAnalysisSection from "./ProjectsAnalysisSection";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/apiClient";
 function Project(){
     const {isLoggedIn}=useOutletContext();
     const navigate=useNavigate();
-    const [projects, setProjects] = useState([
-        {
-            projectId:1,
-            projectName: "Matlab",
-            projectDescription: "Working on MATLAB programs and simulations for academic assignments and problem solving.",
-            projectStatus: "Not Started"
-        },
-        {
-            projectId:2,
-            projectName: "DAA",
-            projectDescription: "Studying Design and Analysis of Algorithms including sorting, graph algorithms, and complexity.",
-            projectStatus: "Not Started"
-        },
-        {
-            projectId:3,
-            projectName: "Expense Website",
-            projectDescription: "Building a web app to track expenses with features like adding, editing, and visualizing spending.",
-            projectStatus: "Not Started"
-        },
-        {
-            projectId:4,
-            projectName: "Spring Boot Learning",
-            projectDescription: "Learning backend development using Spring Boot, REST APIs, and database integration.",
-            projectStatus: "Not Started"
-        },
-        {
-            projectId:5,
-            projectName: "ML Learning",
-            projectDescription: "Exploring machine learning concepts including regression, classification, and model training.",
-            projectStatus: "Not Started"
-        },
-        {
-            projectId:6,
-            projectName: "KanBan Board Website",
-            projectDescription: "Developing a Kanban board using React and Tailwind with task management and project tracking features.",
-            projectStatus: "Not Started"
-        },
-        {
-            projectId:7,
-            projectName: "ML Learning",
-            projectDescription: "Exploring machine learning concepts including regression, classification, and model training.",
-            projectStatus: "Not Started"
-        },
-        {
-            projectId:8,
-            projectName: "KanBan Board Website",
-            projectDescription: "Developing a Kanban board using React and Tailwind with task management and project tracking features.",
-            projectStatus: "Not Started"
-        }
-    ]);
+    
+    const [project,setProject]=useState([]);
+
+    useEffect(()=>{
+        const fetchProjects = async () => {
+            try {
+                const response = await api.get("/projects/all-projects");
+                setProject(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchProjects();
+    },[])
 
     const [modalStatus,setModalStatus]=useState(false);
 
     const handelProjectModal=(status)=>{
         setModalStatus(status);
-    }
-
-    const handleProjectEdit = (index, updatedProject) => {
-        const updatedProjects = projects.map((project, projectIndex) => {
-            if (projectIndex === index) {
-                return {
-                    ...project,
-                    projectName: updatedProject.projectName,
-                    projectDescription: updatedProject.projectDescription,
-                };
-            }
-
-            return project;
-        });
-
-        setProjects(updatedProjects);
-    };
-
-
-    const handelProjectStatusChange=(index,newStatus)=>{
-        const updatedProjects = projects.map((project,projectIndex)=>{
-            if(projectIndex === index){
-                return {
-                    ...project,
-                    projectStatus: newStatus
-                }
-            }
-            return project;
-        })
-
-        setProjects(updatedProjects);
     }
 
     const getProjectTrack=()=>{
@@ -103,7 +37,7 @@ function Project(){
             done: 0
         }
 
-        projects.forEach((project)=>{
+        project.forEach((project)=>{
             if(project.projectStatus === "Not Started"){
                 projectTrack.notStarted += 1;
             }
@@ -128,8 +62,8 @@ function Project(){
                 }
                 {isLoggedIn &&
                     <div className="w-full h-full flex p-1">
-                        <div className="flex flex-wrap gap-6 w-full md:w-3/4  p-2">
-                            <div className="sticky top-0 z-10 bg-surface w-full  flex justify-between items-center pr-3 pl-3 pb-3 shadow-lg">
+                        <div className="flex flex-wrap content-start gap-6 w-full md:w-3/4  p-2">
+                            <div className="sticky top-0 z-10 bg-surface w-full flex justify-between items-center pr-3 pl-3 pb-3 shadow-lg">
                                 <p className="text-4xl">Projects</p>
                                 <button onClick={()=>handelProjectModal(true)} className="flex gap-2 items-center justify-center rounded-2xl hover:scale-105 duration-200 bg-primary p-2 md:w-56">
                                     <PlusIcon className="w-6 h-6"/>
@@ -138,14 +72,12 @@ function Project(){
                                 <ProjectModal isOpen={modalStatus} onClose={()=>handelProjectModal(false)} />
                             </div>
                             {
-                                projects.map((project,index)=>
+                                project.map((project,index)=>
                                     <ProjectCard 
-                                    key={project.projectId} 
+                                    key={project._id} 
                                     projectData={project} 
                                     index={index} 
-                                    handelProjectStatusChange={handelProjectStatusChange}
-                                    handleProjectEdit={handleProjectEdit}
-                                    onOpenProject={()=>navigate(`/projects/${project.projectId}`)}
+                                    onOpenProject={()=>navigate(`/projects/${project._id}`)}
                                     />
                                 )
                             }

@@ -4,11 +4,8 @@ import logo from '../assets/logo.png';
 import { useState } from "react";
 import SlideMenu from "./SlideMenu";
 import { Link } from "react-router-dom";
-function NavBar({ isLoggedIn, setIsLoggedIn }){
+function NavBar({ isLoggedIn}){
     const [slideMenuStatus,setSlideMenuStatus]=useState(false);
-    const handleLogin=()=>{
-        setIsLoggedIn(true);
-    }
     const handleSlideMenu=(status)=>{
         setSlideMenuStatus(status)
     }
@@ -20,7 +17,7 @@ function NavBar({ isLoggedIn, setIsLoggedIn }){
                 <button className="cursor-pointer"><Bars3Icon className="w-10 md:hidden text-on-surface" onClick={()=>handleSlideMenu(true)}/></button>
             </div>
 
-            <SlideMenu onClose={()=>handleSlideMenu(false)} openStatus={slideMenuStatus} isLoggedIn={isLoggedIn} closeLogin={handleLogin}/>
+            <SlideMenu onClose={()=>handleSlideMenu(false)} openStatus={slideMenuStatus} isLoggedIn={isLoggedIn}/>
 
             {/* Website Icon */}
             <div className="h-12 min-w-32 bg-logo-bg rounded-xl">
@@ -40,7 +37,7 @@ function NavBar({ isLoggedIn, setIsLoggedIn }){
             {/* Login Button*/}
             {!isLoggedIn &&
                 <Link to={"/login"}>
-                    <button className="hidden md:block h-9 w-36 bg-btn-login-bg text-btn-login-text rounded-xl shadow-md shadow-black hover:scale-105 ease-in-out duration-200" onClick={handleLogin}>    
+                    <button className="hidden md:block h-9 w-36 bg-btn-login-bg text-btn-login-text rounded-xl shadow-md shadow-black hover:scale-105 ease-in-out duration-200">    
                         Login/Sign Up
                     </button>
                 </Link>

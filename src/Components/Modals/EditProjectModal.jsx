@@ -1,7 +1,8 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState,useEffect } from "react";
+import api from "../../api/apiClient";
 
-function EditProjectModal({isOpen,onClose,projectData ,onSave}){
+function EditProjectModal({isOpen,onClose,projectData}){
     const [newName,setNewName]=useState("");
     const [newDescription,setNewDescription]=useState("");
 
@@ -22,14 +23,19 @@ function EditProjectModal({isOpen,onClose,projectData ,onSave}){
         setNewDescription(e.target.value);
     }
 
-    const handleProjectEdit=()=>{
+    const handleProjectEdit=async()=>{
         const updatedProject = {
             projectName: newName,
             projectDescription: newDescription,
         };
-
-        onSave(updatedProject);
-        onClose();
+        try {
+            await api.patch(`/projects/edit-project-details/${projectData._id}`, updatedProject);
+            window.location.reload();
+            onClose();
+        } catch (error) {
+            console.log(error);
+            onClose();
+        }
     }
 
 

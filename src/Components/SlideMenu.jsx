@@ -1,6 +1,6 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-function SlideMenu({onClose,openStatus,isLoggedIn,closeLogin}){
+function SlideMenu({onClose,openStatus,isLoggedIn}){
     if(!openStatus) return null;
 
     return(
@@ -14,7 +14,7 @@ function SlideMenu({onClose,openStatus,isLoggedIn,closeLogin}){
                 <div className="flex flex-col gap-10 text-3xl">
                     {!isLoggedIn &&
                         <Link to={"/login"}>
-                            <button className="h-9 w-36 text-lg bg-btn-login-bg text-btn-login-text rounded-xl shadow-md shadow-black hover:scale-105 ease-in-out duration-200" onClick={closeLogin}>    
+                            <button className="h-9 w-36 text-lg bg-btn-login-bg text-btn-login-text rounded-xl shadow-md shadow-black hover:scale-105 ease-in-out duration-200" onClick={onClose}>    
                                 Login/Sign Up
                             </button>
                         </Link>

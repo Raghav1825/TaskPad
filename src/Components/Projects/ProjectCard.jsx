@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import EditProjectModal from "../Modals/EditProjectModal";
-function ProjectCard({projectData,index,handelProjectStatusChange,handleProjectEdit,onOpenProject}){
+import api from "../../api/apiClient";
+function ProjectCard({projectData,index,onOpenProject}){
     const typesOfStatus=["Not Started","In Progress","Done"];
 
     const getStatusStyle=(status)=>{
@@ -22,6 +23,16 @@ function ProjectCard({projectData,index,handelProjectStatusChange,handleProjectE
         setOpenEdit(status);
     }
 
+    const handleStatusChange=async(e)=>{
+        const newStatus=e.target.value;
+        try{
+            await api.patch(`/projects/edit-project-status/${projectData._id}`,{projectStatus:newStatus});
+            window.location.reload();
+        }
+        catch(error){
+            alert(error.message);
+        }
+    }
     return(
         <>
             <div onClick={onOpenProject} className={`shadow-md shadow-primary rounded-2xl w-full md:w-56 lg:w-xs h-48 lg:h-52 flex flex-col hover:scale-105 duration-200 ease-in-out gap-2 ${getStatusStyle(projectData.projectStatus)}`}>
@@ -35,9 +46,7 @@ function ProjectCard({projectData,index,handelProjectStatusChange,handleProjectE
                 <div className="p-2 w-full flex justify-between" onClick={(e) => e.stopPropagation()}>
                     <div className="text-sm md:text-md flex items-center gap-1">
                         <label>Status: </label>
-                        <select className="bg-primary rounded-lg cursor-pointer"  value={projectData.projectStatus}
-                            onChange={(e)=>handelProjectStatusChange(index,e.target.value)}
-                        >
+                        <select className="bg-primary rounded-lg cursor-pointer"  value={projectData.projectStatus} onChange={handleStatusChange}>
                             {typesOfStatus.map((Status,index)=><option value={Status} key={index}>{Status}</option>)}
                         </select>
                     </div>
@@ -50,8 +59,7 @@ function ProjectCard({projectData,index,handelProjectStatusChange,handleProjectE
             <EditProjectModal 
                         isOpen={openEdit} 
                         projectData={projectData} 
-                        onClose={()=>handleEdit(false)}
-                        onSave={(updatedProject) => handleProjectEdit(index, updatedProject)}   
+                        onClose={()=>handleEdit(false)}   
             />
         </>
     )

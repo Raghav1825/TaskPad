@@ -46,10 +46,10 @@ function Settings(){
             <div className="flex flex-col  gap-10">
                 <button className="flex  sm:w-1/4 items-center h-12 justify-between text-2xl p-3">
                     <p>Log Out</p>
-                    <ArrowRightStartOnRectangleIcon className="w-8 h-8" onClick={handleLogout}/>
+                    <ArrowRightStartOnRectangleIcon className="w-8 h-8 cursor-pointer" onClick={handleLogout}/>
                 </button>
 
-                <button className="flex items-center justify-between rounded-xl hover:bg-red-500 hover:text-white p-3 sm:w-1/4 text-red-400 ease-in-out duration-200">
+                <button className="flex items-center justify-between rounded-xl hover:bg-red-500 hover:text-white p-3 sm:w-1/4 text-red-400 ease-in-out duration-200 cursor-pointer">
                     <p className="text-2xl">Delete Account</p>
                     <TrashIcon className="w-8 h-8"/>
                 </button>

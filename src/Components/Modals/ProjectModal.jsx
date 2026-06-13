@@ -1,31 +1,30 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import api from "../../api/apiClient";
 function ProjectModal({isOpen,onClose}){
     if(!isOpen) return null;
     const [projectName,setProjectName]=useState("");
     const [projectDescription,setProjectDescription]=useState("");
-    const [projectData,setProjectData]=useState([]);
     const handleProjectName=(e)=>{
         setProjectName(e.target.value);
     }
     const handleProjectDescription=(e)=>{
         setProjectDescription(e.target.value);
     }
-    const addMessage=()=>{
-        if(projectName.trim()!==""){
-
+    const addProjectData=async()=>{
+        try {
             const newProject={
                 projectName:projectName,
                 projectDescription:projectDescription,
             };
-            setProjectData((prev)=>[...prev,newProject]);
-            setProjectName("");
-            setProjectDescription("");
-            alert(`Project "${projectName}" added successfully.`);
+            await api.post("/projects/create-project",newProject);
             onClose();
-        } 
-        else alert("Please enter a project name");
+            window.location.reload();
+        } catch (error) {
+            console.log(error);
+        }
     }
+
     return(
         <>  
             <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" onClick={onClose}></div>
@@ -38,7 +37,7 @@ function ProjectModal({isOpen,onClose}){
 
                 <input type="text" placeholder="Add project name" className="border h-11 p-3 rounded-lg" onChange={handleProjectName}/>
                 <textarea placeholder="Add description for the project" className="border p-3 rounded-lg" onChange={handleProjectDescription}/>
-                <button className="bg-primary rounded-lg h-8 cursor-pointer" onClick={addMessage} >Add Project</button>
+                <button className="bg-primary rounded-lg h-8 cursor-pointer" onClick={addProjectData} >Add Project</button>
             </div>
         </>
     );
