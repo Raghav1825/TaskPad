@@ -1,5 +1,5 @@
 import TaskCard from "./TaskCard";
-function TaskInProgress({tasks,statusChange,taskDeletion}){
+function TaskInProgress({tasks,onSuccess}){
     let n=tasks.length;
     let empty=n>0?false:true;
     return(
@@ -14,7 +14,7 @@ function TaskInProgress({tasks,statusChange,taskDeletion}){
                     </div>
                 }
                 {!empty&&
-                    tasks.map((task)=>(<TaskCard task={task}/>))
+                    tasks.map((task)=>(<TaskCard task={task} onSuccess={onSuccess} key={task._id}/>))
                 }
             </div>
         </div>

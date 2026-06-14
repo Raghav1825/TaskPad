@@ -1,12 +1,67 @@
 import { ChevronDownIcon , PencilSquareIcon , TrashIcon , InformationCircleIcon} from "@heroicons/react/24/outline";
-import { useState } from "react";
-function TaskCard({task}){
+import { useState,useEffect } from "react";
+import api from "../../api/apiClient.js";
+import ProjectTaskEditModal from "../Modals/ProjectTaskEditModal.jsx";
+function TaskCard({task , onSuccess}){
     const status=["not started","in progress","done"];
 
     const [rotateStatus,setRotateStatus]=useState(false);
+    const [modalStatus,setModalStatus]=useState(false);
+
+    const handelTaskModal=(status)=>{
+        setModalStatus(status);
+    }
 
     const handleRotateStatus=()=>{
         setRotateStatus((prev)=>(!prev));
+    }
+
+    const [editedBy,setEditedBy]=useState("");
+    const [addedBy,setAddedBy]=useState("");
+
+    const FindEditedBy=async()=>{
+        try{
+            const response=await api.get(`/users/${task.editedBy}`);
+            setEditedBy(response.data.fullName);
+        }catch(error){
+            alert(error.message);
+        }
+    }
+
+    const FindAddedBy=async()=>{
+        try{
+            const response=await api.get(`/users/${task.addedBy}`);
+            setAddedBy(response.data.fullName);
+        }catch(error){
+            alert(error.message);
+        }
+    }
+
+    useEffect(()=>{
+        FindAddedBy();
+        if(task.editedBy){
+            FindEditedBy();
+        }
+    },[task]);
+
+    const handleStatusChange=async(e)=>{
+        try{
+            await api.patch(`/projectTasks/update-task-status/${task._id}`,{
+                taskStatus:e.target.value
+            });
+            onSuccess();
+        }catch(error){
+            alert(error.message);
+        }
+    }
+
+    const handleTaskDelete=async()=>{
+        try {
+            await api.delete(`/projectTasks/delete-project-task/${task._id}`);
+            onSuccess();
+        } catch (error) {
+            alert(error.message)
+        }
     }
     return(
         <div className="w-full flex flex-col p-1  bg-primary rounded-md gap-1">
@@ -21,24 +76,25 @@ function TaskCard({task}){
                 <div className="w-full p-1 border-t-2 border-on-surface flex flex-col text-xs">
                     <p>Description:</p>
                     <p>{task.taskDescription}</p>
-                    <p>Added by: {task.addedBy}</p>
-                    <p>Last Edited by: {task.editedBy?task.editedBy:"None"}</p>
+                    <p>Added by: {addedBy}</p>
+                    <p>Last Edited by: {task.editedBy?editedBy:"None"}</p>
                 </div>
             }
             <div className="flex justify-between items-center p-1 border-t-2 border-on-surface">
                 <div className="flex items-center gap-2 mt-1">
                     <p>Status:</p>
-                    <select value={task.taskStatus} className="bg-accent rounded-sm cursor-pointer">
+                    <select value={task.taskStatus} className="bg-accent rounded-sm cursor-pointer" onChange={handleStatusChange}>
                         <option value={status[0]}>Not Started</option>
                         <option value={status[1]}>In Progress</option>
                         <option value={status[2]}>Done</option>
                     </select>
                 </div>
                 <div className="flex items-center gap-2 cursor-pointer">
-                    <PencilSquareIcon className="w-5 h-5"/>
-                    <TrashIcon className="w-5 h-5 hover:text-red-400"/>
+                    <PencilSquareIcon className="w-5 h-5" onClick={()=>handelTaskModal(true)}/>
+                    <TrashIcon className="w-5 h-5 hover:text-red-400" onClick={handleTaskDelete}/>
                 </div>
             </div>
+            <ProjectTaskEditModal isOpen={modalStatus} onClose={()=>handelTaskModal(false)} taskData={task} onSuccess={onSuccess}/>
         </div>
     )
 }

@@ -1,9 +1,34 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import api from "../../api/apiClient.js"
 
-function TaskModal({isOpen,onClose}){
+function TaskModal({isOpen,onClose,projectID,onSuccess}){
     if(!isOpen) return null;
 
+    const [taskName,setTaskName]=useState("");
+    const [taskDescription,setTaskDescription]=useState("");
+
+    const handleTaskName=(e)=>{
+        setTaskName(e.target.value);
+    }
+
+    const handleDescription=(e)=>{
+        setTaskDescription(e.target.value);
+    }
+
+    const addTask=async()=>{
+        try{
+            await api.post(`/projectTasks/create-task/${projectID}`,{
+                taskName,
+                taskDescription
+            });
+            onSuccess();
+            onClose();
+        }catch(error){
+            alert(error.message);
+            onClose();
+        }
+    }
 
     return(
         <>
@@ -15,9 +40,9 @@ function TaskModal({isOpen,onClose}){
                     <XMarkIcon className="w-7 h-7 cursor-pointer hover:text-red-400" onClick={onClose} />
                 </div>
 
-                <input type="text" placeholder="Enter task" className="border h-11 p-3 rounded-lg" />
-                <textarea placeholder="Enter description for the task" className="border p-3 rounded-lg" />
-                <button className="bg-primary rounded-lg h-8 cursor-pointer" >Add Task</button>
+                <input type="text" placeholder="Enter task" className="border h-11 p-3 rounded-lg"  onChange={handleTaskName}/>
+                <textarea placeholder="Enter description for the task" className="border p-3 rounded-lg" onChange={handleDescription}/>
+                <button className="bg-primary rounded-lg h-8 cursor-pointer" onClick={addTask} >Add Task</button>
             </div>
         </>
     )

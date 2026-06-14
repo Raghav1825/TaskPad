@@ -2,7 +2,7 @@ import TaskCard from "./TaskCard";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import TaskModal from "../Modals/TaskModal";
 import { useState } from "react";
-function TaskNotStarted({tasks,statusChange,taskDeletion}){
+function TaskNotStarted({tasks, projectID,onSuccess}){
     let n=tasks.length;
     let empty=n>0?false:true;
     const [modalStatus,setModalStatus]=useState(false);
@@ -17,7 +17,7 @@ function TaskNotStarted({tasks,statusChange,taskDeletion}){
                 <p>Not Started</p>
                 <PlusIcon className="w-6 h-6 cursor-pointer" onClick={()=>handelProjectModal(true)}/>
             </div>
-            <TaskModal isOpen={modalStatus} onClose={()=>handelProjectModal(false)}/>
+            <TaskModal isOpen={modalStatus} onClose={()=>handelProjectModal(false)} projectID={projectID} onSuccess={onSuccess}/>
             <div className="flex flex-col gap-2">
                 {empty &&
                     <div className="w-full h-28 flex justify-center items-center">
@@ -25,7 +25,7 @@ function TaskNotStarted({tasks,statusChange,taskDeletion}){
                     </div>
                 }
                 {!empty&&
-                    tasks.map((task)=>(<TaskCard task={task}/>))
+                    tasks.map((task)=>(<TaskCard task={task} onSuccess={onSuccess} key={task._id}/>))
                 }
             </div>
         </div>
