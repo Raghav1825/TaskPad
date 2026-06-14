@@ -1,71 +1,37 @@
-import { useState} from "react";
+import { useState,useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import DailyTaskModal from "../Modals/DailyTaskModal";
 import TaskCard from "./TaskCard";
 import { DndContext,KeyboardSensor,PointerSensor,TouchSensor,closestCorners, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy ,arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import api from "../../api/apiClient.js";   
 function DailyTask(){
     const {isLoggedIn}=useOutletContext();
     const [modalStatus,setModalStatus]=useState(false);
-    const [nextId, setNextId] = useState(1);
+    const [dailyTask,setDailyTask]=useState([]);
+
 
     const handelTaskModal=(status)=>{
         setModalStatus(status);
     }
-
-    const [dailyTask,setDailyTask]=useState([]);
-
-    const handleTaskAddition = ({ task, taskDescription }) => {
-        const newTask = {
-        id: nextId,
-        task,
-        taskDescription,
-        date:null,
-        completed:false,
-        };
-        setDailyTask((prev) => {
-            const incompleteTasks = prev.filter((task) => !task.completed);
-            const completedTasks = prev.filter((task) => task.completed);
-
-            return [...incompleteTasks, newTask, ...completedTasks];
-        });
-        setNextId((prev) => prev + 1);
-    };
+    const fetchDailyTask=async()=>{
+        try{
+            const response= await api.get("/dailyTasks/all-tasks");
+            setDailyTask(sortTasks(response.data));
+        }catch(error){
+            alert(error.message);
+        }
+    }
+    useEffect(()=>{
+        fetchDailyTask();
+    },[])
 
     const sortTasks = (tasks) => [
     ...tasks.filter((task) => !task.completed),
     ...tasks.filter((task) => task.completed),
     ];
 
-    const handleDateChange=(id,date)=>{
-        setDailyTask((prev)=>
-            prev.map((task)=>
-                task.id===id? {...task,date:date}:task
-            )
-        )
-    }
-
-    const handleTaskDeletion=(id)=>{
-        let updatedDailyTask=dailyTask.filter((t)=>t.id!==id);
-        setDailyTask(updatedDailyTask);
-    }
-
-    const handleTaskDone=(id,checked)=>{
-        setDailyTask((prev) => {
-        const updatedTasks = prev.map((task) =>
-            task.id === id ? { ...task, completed: checked } : task
-            );
-
-            return sortTasks(updatedTasks);
-        });
-    }
-
-    const handleTaskEdit=(id,newName,newDescription)=>{
-        setDailyTask((prev)=>
-            prev.map((task)=>task.id===id?{...task,task:newName,taskDescription:newDescription}:task)
-        )
-    }
 
     const handleDragEnd=(e)=>{
         const {active,over}=e;
@@ -73,8 +39,11 @@ function DailyTask(){
         if(!over ||active.id === over.id) return;
 
         setDailyTask((prev)=>{
-            const oldIndex = prev.findIndex((task) => task.id === active.id);
-            const newIndex = prev.findIndex((task) => task.id === over.id);
+            const draggedTask = prev.find((t) => t._id === active.id);
+            const overTask = prev.find((t) => t._id === over.id);
+            if (draggedTask.completed !== overTask.completed) return prev;
+            const oldIndex = prev.findIndex((task) => task._id === active.id);
+            const newIndex = prev.findIndex((task) => task._id === over.id);
 
             return arrayMove(prev, oldIndex, newIndex);
         });
@@ -105,20 +74,17 @@ function DailyTask(){
                         </button>
                     </div>
 
-                    <DailyTaskModal isOpen={modalStatus} onClose={()=>handelTaskModal(false)} onAddTask={handleTaskAddition}/>
+                    <DailyTaskModal isOpen={modalStatus} onClose={()=>handelTaskModal(false)} onSuccess={fetchDailyTask}/>
 
                     <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd} sensors={sensors}>
                         <div className="flex flex-col gap-4 p-3">
-                            <SortableContext items={dailyTask.map((task)=>task.id)} strategy={verticalListSortingStrategy}>
+                            <SortableContext items={dailyTask.map((task)=>task._id)} strategy={verticalListSortingStrategy}>
                                 {
                                     dailyTask.map((task)=>(
                                         <TaskCard
-                                            key={task.id} 
+                                            key={task._id} 
                                             task={task} 
-                                            onDeleteTask={handleTaskDeletion} 
-                                            onDateChange={handleDateChange}
-                                            onTaskCompleted={handleTaskDone}
-                                            handleTaskEdit={handleTaskEdit}
+                                            onSuccess={fetchDailyTask}
                                         />
                                     ))
                                 }

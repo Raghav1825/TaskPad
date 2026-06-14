@@ -1,14 +1,15 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState,useEffect } from "react";
+import api from "../../api/apiClient.js";
 
-function EditDailyTaskModal({isOpen,onClose,taskData ,onSave}){
+function EditDailyTaskModal({isOpen,onClose,taskData,onSuccess}){
     const [newName,setNewName]=useState("");
     const [newDescription,setNewDescription]=useState("");
 
     useEffect(() => {
         if (taskData) {
-            setNewName(taskData.task);
-            setNewDescription(taskData.taskDescription);
+            setNewName(taskData.name);
+            setNewDescription(taskData.description);
         }
     }, [taskData]);
 
@@ -22,9 +23,15 @@ function EditDailyTaskModal({isOpen,onClose,taskData ,onSave}){
         setNewDescription(e.target.value);
     }
 
-    const handleProjectEdit=()=>{
-        onSave(newName,newDescription);
-        onClose();
+    const handleProjectEdit=async()=>{
+        try{
+            await api.patch(`/dailyTasks/edit-task/${taskData._id}`,{name:newName,description:newDescription});
+            await onSuccess();
+            onClose();
+        }catch(error){
+            alert(error.message);
+            onClose();
+        }
     }
 
 

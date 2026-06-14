@@ -1,6 +1,7 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-function DailyTaskModal({isOpen,onClose,onAddTask}){
+import api from "../../api/apiClient.js";
+function DailyTaskModal({isOpen,onClose,onSuccess}){
     if(!isOpen) return null;
     const [task,setTask]=useState("");
     const [taskDescription,setTaskDescription]=useState("");
@@ -11,20 +12,15 @@ function DailyTaskModal({isOpen,onClose,onAddTask}){
     const handleTaskDescription=(e)=>{
         setTaskDescription(e.target.value);
     }
-    const addTask = () => {
-        if (task.trim() === "") {
-        alert("Please enter a task");
-        return;
+    const addTask = async() => {
+        try {
+            await api.post("/dailyTasks/add-task",{name:task,description:taskDescription});
+            await onSuccess();
+            onClose();
+        } catch (error) {
+            alert(error.message);
+            onClose();
         }
-
-        onAddTask({
-        task: task.trim(),
-        taskDescription: taskDescription.trim(),
-        });
-
-        setTask("");
-        setTaskDescription("");
-        onClose();
     };
     return(
         <>  
