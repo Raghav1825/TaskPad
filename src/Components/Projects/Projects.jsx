@@ -11,18 +11,19 @@ function Project(){
     const navigate=useNavigate();
     
     const [project,setProject]=useState([]);
-
+    const fetchProjects = async () => {
+        try {
+            const response = await api.get("/projects/all-projects");
+            setProject(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
     useEffect(()=>{
-        const fetchProjects = async () => {
-            try {
-                const response = await api.get("/projects/all-projects");
-                setProject(response.data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fetchProjects();
-    },[])
+        if(isLoggedIn){
+            fetchProjects();
+        }
+    },[isLoggedIn])
 
     const [modalStatus,setModalStatus]=useState(false);
 
@@ -69,7 +70,7 @@ function Project(){
                                     <PlusIcon className="w-6 h-6"/>
                                     <p>Add new project</p>
                                 </button>
-                                <ProjectModal isOpen={modalStatus} onClose={()=>handelProjectModal(false)} />
+                                <ProjectModal isOpen={modalStatus} onClose={()=>handelProjectModal(false)} onSuccess={fetchProjects}/>
                             </div>
                             {
                                 project.map((project,index)=>
@@ -78,6 +79,7 @@ function Project(){
                                     projectData={project} 
                                     index={index} 
                                     onOpenProject={()=>navigate(`/projects/${project._id}`)}
+                                    onSuccess={fetchProjects}
                                     />
                                 )
                             }

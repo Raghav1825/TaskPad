@@ -44,8 +44,12 @@ function NavBar({ isLoggedIn}){
             }
             {/* Profile */}
             {isLoggedIn &&
-                <div className="hidden md:block">
+                <div className=" relative group hidden md:block">
                     <UserCircleIcon className="w-9 h-9 text-btn-login-bg" />
+                    <div className="absolute top-0 right-8 mb-2 hidden group-hover:flex bg-black text-white text-xs rounded-md shadow-lg p-2 whitespace-nowrap z-50">
+                        <p>You are logged in</p>
+                        <div className="absolute top-full right-2 border-4 border-transparent border-t-black"></div>
+                    </div>
                 </div>
             }
         </div>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import EditProjectModal from "../Modals/EditProjectModal";
 import api from "../../api/apiClient";
-function ProjectCard({projectData,index,onOpenProject}){
+function ProjectCard({projectData,index,onOpenProject,onSuccess}){
     const typesOfStatus=["Not Started","In Progress","Done"];
 
     const getStatusStyle=(status)=>{
@@ -27,7 +27,7 @@ function ProjectCard({projectData,index,onOpenProject}){
         const newStatus=e.target.value;
         try{
             await api.patch(`/projects/edit-project-status/${projectData._id}`,{projectStatus:newStatus});
-            window.location.reload();
+            onSuccess();
         }
         catch(error){
             alert(error.message);
@@ -60,6 +60,7 @@ function ProjectCard({projectData,index,onOpenProject}){
                         isOpen={openEdit} 
                         projectData={projectData} 
                         onClose={()=>handleEdit(false)}   
+                        onSuccess={onSuccess}
             />
         </>
     )

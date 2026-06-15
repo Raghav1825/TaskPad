@@ -17,6 +17,15 @@ function Home(){
         setModalStatus(status);
     }
 
+    const fetchProjects = async () => {
+        try {
+            const response = await api.get("/projects/all-projects");
+            setProject(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(()=>{
         const fetchUserSettings=async()=>{
             try {
@@ -30,11 +39,13 @@ function Home(){
 
     return(
         <div className="w-full  flex flex-col items-center p-1">
-            <button onClick={()=>handelProjectModal(true)} className="flex flex-row items-center border-2 h-10 w-3xs justify-center md:h-11 md:w-xl lg:h-12 lg:w-2xl rounded-2xl bg-primary border-none hover:shadow-lg hover:shadow-black hover:scale-105 ease-in-out duration-300 cursor-pointer">
-                <PlusIcon className="w-8 h-8"/>
-                <p className="ml-4">Add new project</p>
-            </button>
-            <ProjectModal isOpen={modalStatus} onClose={()=>handelProjectModal(false)} />
+            {isLoggedIn&&
+                <button onClick={()=>handelProjectModal(true)} className="flex flex-row items-center border-2 h-10 w-3xs justify-center md:h-11 md:w-xl lg:h-12 lg:w-2xl rounded-2xl bg-primary border-none hover:shadow-lg hover:shadow-black hover:scale-105 ease-in-out duration-300 cursor-pointer">
+                    <PlusIcon className="w-8 h-8"/>
+                    <p className="ml-4">Add new project</p>
+                </button>
+            }
+            <ProjectModal isOpen={modalStatus} onClose={()=>handelProjectModal(false)} onSuccess={fetchProjects}/>
             <div className="mt-5 mb-8">
                 <BlurText
                 text="TaskPad — Organize Your Work. Move Faster."

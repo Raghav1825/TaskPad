@@ -24,8 +24,10 @@ function DailyTask(){
         }
     }
     useEffect(()=>{
-        fetchDailyTask();
-    },[])
+        if(isLoggedIn){
+            fetchDailyTask();
+        }
+    },[isLoggedIn])
 
     const sortTasks = (tasks) => [
     ...tasks.filter((task) => !task.completed),

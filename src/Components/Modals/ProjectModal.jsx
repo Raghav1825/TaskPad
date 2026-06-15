@@ -1,7 +1,7 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
 import api from "../../api/apiClient";
-function ProjectModal({isOpen,onClose}){
+function ProjectModal({isOpen,onClose,onSuccess}){
     if(!isOpen) return null;
     const [projectName,setProjectName]=useState("");
     const [projectDescription,setProjectDescription]=useState("");
@@ -18,8 +18,8 @@ function ProjectModal({isOpen,onClose}){
                 projectDescription:projectDescription,
             };
             await api.post("/projects/create-project",newProject);
+            onSuccess();
             onClose();
-            window.location.reload();
         } catch (error) {
             console.log(error);
         }

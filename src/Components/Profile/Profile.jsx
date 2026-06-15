@@ -20,8 +20,10 @@ function Profile(){
                 alert(error.message);
             }
         }
-        fetchProfile();
-    },[]);
+        if(isLoggedIn){
+            fetchProfile();
+        }
+    },[isLoggedIn]);
 
     const handelProfileDetailsModal=(status)=>{
         setModalStatus(status);
