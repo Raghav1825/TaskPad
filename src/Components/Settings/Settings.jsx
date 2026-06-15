@@ -2,6 +2,9 @@ import { useOutletContext } from "react-router-dom";
 import { SunIcon , MoonIcon,ArrowRightStartOnRectangleIcon ,TrashIcon } from "@heroicons/react/24/outline";
 import {useTheme} from "../../context/ThemeContext";
 import api from "../../api/apiClient";
+import DeleteAccountModal from "../Modals/DeleteAccountModal";
+import {useState} from "react";
+
 function Settings(){
 
     const {isLoggedIn}=useOutletContext();
@@ -15,6 +18,11 @@ function Settings(){
       } catch (error) {
         console.log(error);
       }
+    }
+
+    const [deleteModalStatus,setDeleteModalStatus]=useState(false);
+    const handelDeleteModalStatus=(status)=>{
+        setDeleteModalStatus(status);
     }
 
     return(
@@ -49,12 +57,17 @@ function Settings(){
                     <ArrowRightStartOnRectangleIcon className="w-8 h-8 cursor-pointer" onClick={handleLogout}/>
                 </button>
 
-                <button className="flex items-center justify-between rounded-xl hover:bg-red-500 hover:text-white p-3 sm:w-1/4 text-red-400 ease-in-out duration-200 cursor-pointer">
+                <button className="flex items-center justify-between rounded-xl hover:bg-red-500 hover:text-white p-3 sm:w-1/4 text-red-400 ease-in-out duration-200 cursor-pointer" onClick={()=>handelDeleteModalStatus(true)}>
                     <p className="text-2xl">Delete Account</p>
                     <TrashIcon className="w-8 h-8"/>
                 </button>
             </div>
             }
+
+            <DeleteAccountModal
+                isOpen={deleteModalStatus}
+                onClose={()=>handelDeleteModalStatus(false)}
+            />
         </div>
     )
 }

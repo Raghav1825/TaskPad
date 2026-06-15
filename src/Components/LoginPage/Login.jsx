@@ -19,7 +19,7 @@ function Login(){
     try {
       const response = await api.post("/users/login",user);
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     }
   }
   return (
