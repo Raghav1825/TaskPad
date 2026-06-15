@@ -1,11 +1,12 @@
 import { PlusIcon } from "@heroicons/react/24/outline"
 import BlurText from "../UI/BlurText"
 import { useOutletContext } from "react-router-dom"
-import RecentSection from "./RecentSection";
+import MemberProjects from "./MemberProjects";
 import TodaysTaskSection from "./TodaysTaskSection";
 import ProjectModal from "../Modals/ProjectModal";
 import { useState } from "react";
-import DemoImage from "../../assets/demopage.png"
+import DemoImage from "../../assets/demopage.png";
+import OwnerProjects from "./OwnerProjects";
 function Home(){
     
     const {isLoggedIn}=useOutletContext();
@@ -36,7 +37,8 @@ function Home(){
                 </div>
             }
             <TodaysTaskSection loginStatus={isLoggedIn}/>
-            <RecentSection loginStatus={isLoggedIn}/>
+            <OwnerProjects loginStatus={isLoggedIn}/>
+            <MemberProjects loginStatus={isLoggedIn}/>
         </div>
     )
 }

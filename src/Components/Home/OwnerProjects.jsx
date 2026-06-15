@@ -1,34 +1,32 @@
-import { useState, useEffect } from "react";
+import { useState,useEffect } from "react";
 import api from "../../api/apiClient.js";
-function TodaysTaskSection(props){
-    const [taskToday,setTaskToday]=useState([]);
-
-    const fetchTodaysTask=async()=>{
-        try {
-            const response = await api.get("/dailyTasks/today");
-            setTaskToday(response.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
+function OwnerProjects(props){
+    const [ownerProject,setOwnerProject]=useState([]);
     
 
+    const fetchOwnerProjects=async()=>{
+        try {
+            const response=await api.get("/projects/owner-projects");
+            setOwnerProject(response.data || []);
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
     useEffect(()=>{
-        fetchTodaysTask();
+        fetchOwnerProjects();
     },[]);
     return(
         <div className="w-full  rounded-xl  mt-8 shadow-lg shadow-primary ">
-            { props.loginStatus && taskToday.length>0 &&
+            { props.loginStatus && ownerProject.length>0 &&
 
                 <div className="w-full  flex flex-col p-3 ">
-                    <h2 className="text-2xl">Today's Taks</h2>
+                    <h2 className="text-2xl">Projects (you as a owner)</h2>
                     <div className="flex p-3  items-center flex-wrap gap-4 w-full ">
                        {
                             
-                            taskToday.map((task,index)=>(
-                                <div key={index} value={task} className="flex  border-accent  border shadow-md shadow-accent rounded-xl items-center justify-between p-3  flex-wrap w-full sm:w-auto">
-                                    <p className="mr-3">{index+1}. {task.name}</p>
+                            ownerProject.map((project,index)=>(
+                                <div key={index} value={project} className="flex border-accent  border shadow-md shadow-accent rounded-xl items-center justify-between p-3  flex-wrap w-full sm:w-auto">
+                                    <p className="mr-3">{project.projectName}</p>    
                                 </div>
                             ))
                        }
@@ -36,12 +34,12 @@ function TodaysTaskSection(props){
                 </div>
 
             }
-            { props.loginStatus && taskToday.length==0 &&
+            { props.loginStatus && ownerProject.length==0 &&
 
                 <div className="w-full  flex flex-col p-3 ">
-                    <h2 className="text-2xl">Today's Taks</h2>
+                    <h2 className="text-2xl">Projects (you as a owner)</h2>
                     <div className="flex p-3  items-center flex-wrap gap-4 w-full ">
-                       <p className="text-xl text-gray-500">No tasks with today's due date. Start now....</p>
+                       <p className="text-xl text-gray-500">You are not the owner of any project. Start working now....</p>
                     </div>
                 </div>
 
@@ -50,7 +48,7 @@ function TodaysTaskSection(props){
                 !props.loginStatus &&
 
                 <div className="h-52 p-5 flex flex-col">
-                    <p className="text-2xl mb-2">Today's Task</p>
+                    <p className="text-2xl mb-2">Projects (you as a owner)</p>
                     <div className="flex items-center justify-center w-full h-full  text-accent rounded-xl border-7 border-dashed border-primary">
                         <p className="text-2xl">Please Login/Sign up  to continue</p>
                     </div>
@@ -59,4 +57,4 @@ function TodaysTaskSection(props){
         </div>
     )
 }
-export default TodaysTaskSection
+export default OwnerProjects
