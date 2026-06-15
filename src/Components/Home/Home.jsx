@@ -4,9 +4,10 @@ import { useOutletContext } from "react-router-dom"
 import MemberProjects from "./MemberProjects";
 import TodaysTaskSection from "./TodaysTaskSection";
 import ProjectModal from "../Modals/ProjectModal";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import DemoImage from "../../assets/demopage.png";
 import OwnerProjects from "./OwnerProjects";
+import api from "../../api/apiClient.js";
 function Home(){
     
     const {isLoggedIn}=useOutletContext();
@@ -15,6 +16,18 @@ function Home(){
     const handelProjectModal=(status)=>{
         setModalStatus(status);
     }
+
+    useEffect(()=>{
+        const fetchUserSettings=async()=>{
+            try {
+                const response=await api.post("/userSettings/initialize");
+            } catch (error) {
+                
+            }
+        }
+        fetchUserSettings();
+    },[])
+
     return(
         <div className="w-full  flex flex-col items-center p-1">
             <button onClick={()=>handelProjectModal(true)} className="flex flex-row items-center border-2 h-10 w-3xs justify-center md:h-11 md:w-xl lg:h-12 lg:w-2xl rounded-2xl bg-primary border-none hover:shadow-lg hover:shadow-black hover:scale-105 ease-in-out duration-300 cursor-pointer">

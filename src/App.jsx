@@ -3,16 +3,18 @@ import NavBar from "./Components/NavBar";
 import SideBar from "./Components/SideBar";
 import { useState,useEffect } from "react";
 import api from "./api/apiClient";
-
+import { useTheme } from "./context/ThemeContext";
 function App() {
   const [isLoggedIn,setIsLoggedIn]=useState(false);
 
+  const {getTheme}=useTheme();
   useEffect(()=>{
     const checkAuth = async()=>{
       try {
         const response = await api.get("/users/current-user");
         if(response){
           setIsLoggedIn(true);
+          await getTheme();
         }
       } catch (error) {
         console.log(error);
