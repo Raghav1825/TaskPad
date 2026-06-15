@@ -2,11 +2,26 @@ import { ChevronDownIcon , PencilSquareIcon , TrashIcon , InformationCircleIcon}
 import { useState,useEffect } from "react";
 import api from "../../api/apiClient.js";
 import ProjectTaskEditModal from "../Modals/ProjectTaskEditModal.jsx";
+import { useDraggable } from "@dnd-kit/core";
 function TaskCard({task , onSuccess}){
     const status=["not started","in progress","done"];
 
     const [rotateStatus,setRotateStatus]=useState(false);
     const [modalStatus,setModalStatus]=useState(false);
+
+    const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+        id: task._id,
+        data: { task },
+    });
+
+    const style = {
+        transform: transform
+            ? `translate(${transform.x}px, ${transform.y}px)`
+            : undefined,
+        opacity: isDragging ? 0.4 : 1,
+        zIndex: isDragging ? 50 : "auto",
+    };
+
 
     const handelTaskModal=(status)=>{
         setModalStatus(status);
@@ -64,8 +79,8 @@ function TaskCard({task , onSuccess}){
         }
     }
     return(
-        <div className="w-full flex flex-col p-1  bg-primary rounded-md gap-1">
-            <div className="flex justify-between p-1 items bg-center">
+        <div ref={setNodeRef} style={style} className="w-full flex flex-col p-1  bg-primary rounded-md gap-1 cursor-grab active:cursor-grabbing touch-none">
+            <div className="flex justify-between p-1 items bg-center" {...listeners} {...attributes}>
                 <p>{task.taskName}</p>
                 <div className="flex items-center gap-2">
                     <ChevronDownIcon className={`w-5 h-5 cursor-pointer ${rotateStatus?"rotate-180":"rotate-0"}`} onClick={handleRotateStatus}/>

@@ -9,6 +9,7 @@ import MemberSection from "./MembersSection";
 import api from "../../api/apiClient.js";
 import EditProjectModal from "../Modals/EditProjectModal.jsx";
 import DeleteProjectConfirmModal from "../Modals/DeleteProjectConfirmModal.jsx";
+import { DndContext, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 function MainBoard(){
     const {projectId}=useParams();
     const [projectTasks,setProjectTasks]=useState([]);
@@ -84,6 +85,32 @@ function MainBoard(){
         setModalStatus(status);
     }
 
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 8,
+            },
+        })
+    );
+
+    const handleDragEnd = async (event) => {
+        const { active, over } = event;
+        if (!over) return; // dropped outside any column
+        const taskId = active.id;
+        const newStatus = over.id; // "not started" | "in progress" | "done"
+        // Find the task to check if status actually changed
+        const task = projectTasks.find((t) => t._id === taskId);
+        if (!task || task.taskStatus === newStatus) return; // same column, skip
+        try {
+            await api.patch(`/projectTasks/update-task-status/${taskId}`, {
+                taskStatus: newStatus,
+            });
+            fetchAllTask();
+        } catch (error) {
+            alert(error.message);
+        }
+    };
+
     return(
         <div className="w-full h-full p-1">
                 <div className="w-full shadow-xl flex flex-col mb-3">
@@ -111,30 +138,31 @@ function MainBoard(){
                         </div>
                     }
                 </div>
-
-                <div className="w-full flex-1 min-h-0 flex">
-                    <div className="w-6xl md:flex gap-6 block">
-                        <TaskNotStarted 
-                            tasks={notStartedTasks} 
-                            projectID={projectId}
-                            onSuccess={fetchAllTask}
-                        />
-                        <TaskInProgress 
-                            tasks={inProgressTasks} 
-                            projectID={projectId} 
-                            onSuccess={fetchAllTask} 
-                        />
-                        <TaskDone 
-                            tasks={doneTasks}
-                            projectID={projectId}
-                            onSuccess={fetchAllTask}
-                        />
+                <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+                    <div className="w-full flex-1 min-h-0 flex">
+                        <div className="w-6xl md:flex gap-6 block">
+                            <TaskNotStarted 
+                                tasks={notStartedTasks} 
+                                projectID={projectId}
+                                onSuccess={fetchAllTask}
+                            />
+                            <TaskInProgress 
+                                tasks={inProgressTasks} 
+                                projectID={projectId} 
+                                onSuccess={fetchAllTask} 
+                            />
+                            <TaskDone 
+                                tasks={doneTasks}
+                                projectID={projectId}
+                                onSuccess={fetchAllTask}
+                            />
+                        </div>
+                        <div className="w-2xs pl-2 hidden md:flex flex-col gap-6">
+                            <AnalyseBox taskTrack={taskTrack}/>
+                            <MemberSection projectDetails={projectDetails}/>
+                        </div>
                     </div>
-                    <div className="w-2xs pl-2 hidden md:flex flex-col gap-6">
-                        <AnalyseBox taskTrack={taskTrack}/>
-                        <MemberSection projectDetails={projectDetails}/>
-                    </div>
-                </div>
+                </DndContext>
                 <EditProjectModal isOpen={modalStatus} onClose={()=>handelProjectModal(false)} projectData={projectDetails} onSuccess={fetchProjectDetails}/>
                 <DeleteProjectConfirmModal isOpen={deleteModalStatus} onClose={()=>handelDeleteModalStatus(false)} projectId={projectId}/>
         </div>
