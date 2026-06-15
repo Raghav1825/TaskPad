@@ -2,7 +2,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState,useEffect } from "react";
 import api from "../../api/apiClient";
 
-function EditProjectModal({isOpen,onClose,projectData}){
+function EditProjectModal({isOpen,onClose,projectData,onSuccess}){
     const [newName,setNewName]=useState("");
     const [newDescription,setNewDescription]=useState("");
 
@@ -30,7 +30,7 @@ function EditProjectModal({isOpen,onClose,projectData}){
         };
         try {
             await api.patch(`/projects/edit-project-details/${projectData._id}`, updatedProject);
-            window.location.reload();
+            onSuccess();
             onClose();
         } catch (error) {
             console.log(error);

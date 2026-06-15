@@ -41,8 +41,8 @@ export const api = {
         apiClient(endpoint, { method: "PATCH", body }),
     put: (endpoint, body) => 
         apiClient(endpoint, { method: "PUT", body }),
-    delete: (endpoint) => 
-        apiClient(endpoint, { method: "DELETE" }),
+    delete: (endpoint,body) => 
+        apiClient(endpoint, { method: "DELETE" ,body}),
 };
 
 export default api;

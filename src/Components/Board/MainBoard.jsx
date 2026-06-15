@@ -7,6 +7,8 @@ import TaskDone from "./TaskDone";
 import AnalyseBox from "./AnalyseBox";
 import MemberSection from "./MembersSection";
 import api from "../../api/apiClient.js";
+import EditProjectModal from "../Modals/EditProjectModal.jsx";
+import DeleteProjectConfirmModal from "../Modals/DeleteProjectConfirmModal.jsx";
 function MainBoard(){
     const {projectId}=useParams();
     const [projectTasks,setProjectTasks]=useState([]);
@@ -17,6 +19,12 @@ function MainBoard(){
 
     const handleDescriptionDispay=()=>{
         setDescriptionDisplay((prev)=>(!prev));
+    }
+
+    const [deleteModalStatus,setDeleteModalStatus]=useState(false);
+
+    const handelDeleteModalStatus=(status)=>{
+        setDeleteModalStatus(status);
     }
 
     const fetchAllTask = async()=>{
@@ -69,6 +77,13 @@ function MainBoard(){
         inProgress: inProgressTasks.length,
         done: doneTasks.length,
     };
+
+    const [modalStatus,setModalStatus]=useState(false);
+
+    const handelProjectModal=(status)=>{
+        setModalStatus(status);
+    }
+
     return(
         <div className="w-full h-full p-1">
                 <div className="w-full shadow-xl flex flex-col mb-3">
@@ -78,11 +93,11 @@ function MainBoard(){
                         <div className="flex gap-4 items-center">
                             <p className="text-on-surface/50 text-sm sm:block hidden">Owner: {projectOwner}</p>
                             <button onClick={handleDescriptionDispay} className="cursor-pointer bg-primary p-1 rounded-xl">{!descriptionDisplay?"Show Description":"Hide Description"}</button>
-                            <button className="flex items-center justify-between w-20 bg-primary p-2 rounded-xl cursor-pointer">
+                            <button className="flex items-center justify-between w-20 bg-primary p-2 rounded-xl cursor-pointer" onClick={()=>handelProjectModal(true)}>
                                 <PencilIcon className="w-5 h-5"/>
                                 <p>Edit</p>
                             </button>
-                            <div className="bg-red-400 p-1 rounded-xl hover:scale-105 ease-in-out duration-200 cursor-pointer">
+                            <div className="bg-red-400 p-1 rounded-xl hover:scale-105 ease-in-out duration-200 cursor-pointer" onClick={()=>handelDeleteModalStatus(true)}>
                                 <TrashIcon className="w-7 h-7"/>
                             </div>
                             <InformationCircleIcon className="w-9 h-9 md:hidden"/>
@@ -117,9 +132,11 @@ function MainBoard(){
                     </div>
                     <div className="w-2xs pl-2 hidden md:flex flex-col gap-6">
                         <AnalyseBox taskTrack={taskTrack}/>
-                        <MemberSection/>
+                        <MemberSection projectDetails={projectDetails}/>
                     </div>
                 </div>
+                <EditProjectModal isOpen={modalStatus} onClose={()=>handelProjectModal(false)} projectData={projectDetails} onSuccess={fetchProjectDetails}/>
+                <DeleteProjectConfirmModal isOpen={deleteModalStatus} onClose={()=>handelDeleteModalStatus(false)} projectId={projectId}/>
         </div>
     )
 }
