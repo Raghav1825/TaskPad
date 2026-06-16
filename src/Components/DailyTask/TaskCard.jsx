@@ -68,7 +68,7 @@ function TaskCard({task,onSuccess}){
                     <Bars2Icon className="w-5 h-5 cursor-grab active:cursor-grabbing" ref={setActivatorNodeRef} {...attributes} {...listeners}/>
                     <p>{task.name}</p>
                 </div>
-                <p>{task.date || "No due date"}</p>
+                <p className={task.date && new Date(task.date) < new Date().setHours(0,0,0,0) && !task.completed ? "text-red-500 font-semibold" : ""}>{task.date ? new Date(task.date).toLocaleDateString() : "No due date"}</p>
                 <div className="flex justify-between w-48 items-center">
                     <input type="checkbox" checked={task.completed} onChange={(e)=>handleTaskCompleted(task._id,e)}/>
                     <CalendarDaysIcon className="w-5 h-5 hover:text-blue-400 cursor-pointer" onClick={() => dateInputRef.current.showPicker()}/>
