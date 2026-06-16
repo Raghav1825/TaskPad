@@ -39,7 +39,7 @@ function TaskCard({task , onSuccess}){
             const response=await api.get(`/users/${task.editedBy}`);
             setEditedBy(response.data.fullName);
         }catch(error){
-            alert(error.message);
+            console.log(error.message);
         }
     }
 
@@ -48,7 +48,7 @@ function TaskCard({task , onSuccess}){
             const response=await api.get(`/users/${task.addedBy}`);
             setAddedBy(response.data.fullName);
         }catch(error){
-            alert(error.message);
+            console.log(error.message);
         }
     }
 
@@ -66,7 +66,7 @@ function TaskCard({task , onSuccess}){
             });
             onSuccess();
         }catch(error){
-            alert(error.message);
+            console.log(error.message);
         }
     }
 
@@ -75,7 +75,7 @@ function TaskCard({task , onSuccess}){
             await api.delete(`/projectTasks/delete-project-task/${task._id}`);
             onSuccess();
         } catch (error) {
-            alert(error.message)
+            console.log(error.message)
         }
     }
     return(

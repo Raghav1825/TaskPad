@@ -8,7 +8,7 @@ const refreshAccessToken = async () => {
         credentials: "include",
     });
     if (!response.ok) {
-        window.location.href="/login";
+        throw new Error("Session Expired. Please Login Again");
     }
     return response.json();
 };

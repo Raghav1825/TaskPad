@@ -32,7 +32,7 @@ function MemberSection({projectDetails}){
                     }
                 })
             );
-            setMemberNames(data);
+            setMemberNames(data.filter((member)=>member!==null));
         } catch (error) {
             console.log(error);
         }
